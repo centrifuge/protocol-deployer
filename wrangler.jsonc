@@ -1,0 +1,17 @@
+{
+  "name": "centrifuge-deployer",
+  "compatibility_date": "2026-09-01",
+  "account_id": "b3ed67f30e77dd69fe90702b4ddc9ce8",
+  // The page exists on exactly one origin. It keeps per-chain RPC endpoints in
+  // localStorage, which is scoped to the origin, so a second hostname serving
+  // the same page would be a second, silently divergent set of them.
+  "workers_dev": false,
+  "preview_urls": false,
+  // No Worker code: static assets are served without invoking a script.
+  "assets": { "directory": "./public" },
+  // The Custom Domain is declared here rather than in centrifuge/ops-v3, and
+  // Cloudflare owns the DNS record it creates for it. See that repository's
+  // cloudflare/terraform/README.md decision table.
+  "routes": [{ "pattern": "deployer.centrifugelabs.io", "custom_domain": true }],
+  "observability": { "enabled": true }
+}

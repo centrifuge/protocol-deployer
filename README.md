@@ -1,14 +1,18 @@
 # Centrifuge Deployer
 
-One page, `index.html`, that performs the one-time hardening of the deployer
-key's namespace inside the `DeployGate` on a new chain. It is done once per
-chain, before anything is committed there.
+One page, `public/index.html`, that performs the one-time hardening of the
+deployer key's namespace inside the `DeployGate` on a new chain. It is done once
+per chain, before anything is committed there.
 
-Served at **https://deployer.centrifugelabs.io** from a Cloudflare Pages project
-(`centrifuge-deployer`, Labs account), whose configuration lives in
-[`centrifuge/ops-v3`](https://github.com/centrifuge/ops-v3) under
-`cloudflare/terraform/Centrifuge Labs (dev)/platform/`. A push to `main` here is
-the whole deploy: Pages serves this file unchanged, with no build step.
+Served at **https://deployer.centrifugelabs.io** by a Cloudflare Worker with
+static assets (`centrifuge-deployer`, Labs account). There is no Worker code and
+no build step: `wrangler.jsonc` points at `public/`, and Cloudflare serves what
+is there without invoking a script. A push to `main` is the whole deploy.
+
+Everything about the hosting is declared here, including the Custom Domain — so
+Cloudflare owns the DNS record for the hostname and nothing about it lives in
+[`centrifuge/ops-v3`](https://github.com/centrifuge/ops-v3). See that
+repository's `cloudflare/terraform/README.md` for the rule this follows.
 
 ## What it does
 
@@ -38,7 +42,7 @@ this page is the recipe with a wallet behind it.
 ## Editing it
 
 It is deliberately one self-contained file: no build, no dependencies, no
-bundler. Open it, change it, commit it.
+bundler. Open `public/index.html`, change it, commit it.
 
 Two things to keep in mind:
 
