@@ -1,0 +1,1658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Centrifuge Deployer</title>
+<!-- app.centrifuge.io's own favicon, inlined so the page stays a single file -->
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAMAMDAAAAEAIACoJQAANgAAACAgAAABACAAqBAAAN4lAAAQEAAAAQAgAGgEAACGNgAAKAAAADAAAABgAAAAAQAgAAAAAAAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////Bv///z3///+T////1f////f/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+P///9f///+X////Qf///wcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8n////mf///+v/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7f///57///8rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///0f////U///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Z////Tf///wEAAAAAAAAAAAAAAAAAAAAA////Rv///+L/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////5////04AAAAAAAAAAAAAAAD///8l////0v///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9j///8sAAAAAP///wT///+V////////////////////////////////////////////////////////////////////////////////////////////////////////////////+fn5/+vr6//f39//7u7u//////////////////////////////////////////////////////////////////////////////////////////////////////////+e////B////zn////n////////////////////////////////////////////////////////////////////////////////////////////////7+/v/7q6uv97e3v/SkpK/y0tLf8cHBz/lJSU///////////////////////////////////////////////////////////////////////////////////////////////////////////r////Qv///4v//////////////////////////////////////////////////////////////////////////////////////////+vr6/+Xl5f/Ojo6/woKCv8AAAD/AAAA/wAAAP8AAAD/h4eH////////////////////////////////////////////////////////////////////////////////////////////////////////////////l////8z////////////////////////////////////////////////////////////////////////////////9/f3/urq6/z4+Pv8EBAT/AAAA/wAAAP8FBQX/HR0d/zs7O/9PT0//sbGx////////////////////////////////////////////////////////////////////////////////////////////////////////////////1////+////////////////////////////////////////////////////////////////////////////f39/+Ojo7/FBQU/wAAAP8AAAD/FBQU/1tbW/+qqqr/3Nzc//Pz8//7+/v//v7+////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/////3/////////////////////////////////////////////////////////////////////9/f3/35+fv8ICAj/AAAA/wYGBv9SUlL/xcXF//r6+v/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/f3/jIyM/wgICP8AAAD/EBAQ/4qKiv/z8/P//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8rKyv+oqKj/7u7u//////////////////////+2trb/ExMT/wAAAP8RERH/np6e//39/f/////////////////4+Pj/z8/P/5mZmf91dXX/ampq/3d3d/+dnZ3/09PT//r6+v///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Pz8/15eXv8DAwP/Q0ND/97e3v///////////+jo6P86Ojr/AAAA/wYGBv+NjY3//f39/////////////f39/8bGxv9YWFj/FBQU/wEBAf8AAAD/AAAA/wAAAP8BAQH/FxcX/19fX//Nzc3//v7+////////////////////////////////////////////////////////////////////////////////////////////////////////////2tra/x4eHv8AAAD/NTU1/+vr6////////////4+Pj/8CAgL/AAAA/1hYWP/09PT////////////6+vr/l5eX/xgYGP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8eHh7/oaGh//39/f//////////////////////////////////////////////////////////////////////////////////////////////////////oqKi/wICAv8AAAD/gYGB////////////6urq/zQ0NP8AAAD/GBgY/8rKyv////////////7+/v+VlZX/DAwM/wAAAP8AAAD/DQ0N/0VFRf95eXn/ioqK/3Z2dv9AQED/CwsL/wAAAP8AAAD/WFhY//f39///////////////////////////////////////////////////////////////////////////////////////////////////////aGho/wAAAP8MDAz/wMDA////////////sLCw/wcHB/8AAAD/ZGRk//z8/P///////////8HBwf8XFxf/AAAA/wAAAP82Njb/tbW1//X19f/////////////////z8/P/rq6u/ywsLP8qKir/1NTU///////////////////////////////////////////////////////////////////////////////////////////////////////z8/P/PDw8/wAAAP8oKCj/5ubm////////////b29v/wAAAP8ICAj/s7Oz////////////9vb2/1JSUv8AAAD/AAAA/zg4OP/Z2dn//////////////////////////////////////9LS0v/ExMT////////////////////////////////////////////////////////////////////////////////////////////////////////////i4uL/ISEh/wAAAP9JSUn/+Pj4///////09PT/Pz8//wAAAP8lJSX/4+Pj////////////x8fH/xEREf8AAAD/EBAQ/7q6uv/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////R0dH/ExMT/wAAAP9kZGT////////////k5OT/IyMj/wAAAP9GRkb/+Pj4////////////jo6O/wAAAP8AAAD/Tk5O//j4+P/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FxcX/DAwM/wAAAP92dnb////////////W1tb/FhYW/wAAAP9eXl7/////////////////aGho/wAAAP8AAAD/hYWF///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AwMD/CgoK/wAAAP99fX3////////////R0dH/EhIS/wAAAP9nZ2f////////////+/v7/W1tb/wAAAP8AAAD/mZmZ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ExMT/CwsL/wAAAP93d3f////////////W1tb/FhYW/wAAAP9gYGD/////////////////ZmZm/wAAAP8AAAD/iIiI///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Q0ND/EhIS/wAAAP9mZmb////////////j4+P/IiIi/wAAAP9ISEj/+Pj4////////////ioqK/wAAAP8AAAD/U1NT//n5+f/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////h4eH/ICAg/wAAAP9LS0v/+fn5///////z8/P/PT09/wAAAP8nJyf/5eXl////////////wsLC/w4ODv8AAAD/ExMT/8HBwf/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////y8vL/Ojo6/wAAAP8qKir/6Ojo////////////a2tr/wAAAP8JCQn/uLi4////////////9PT0/0tLS/8AAAD/AAAA/0FBQf/g4OD//////////////////////////////////////9ra2v++vr7//Pz8////////////////////////////////////////////////////////////////////////////////////////////////////////////ZGRk/wAAAP8NDQ3/xMTE////////////rKys/wUFBf8AAAD/ampq//7+/v///////////7m5uf8TExP/AAAA/wAAAP9AQED/wsLC//r6+v/////////////////4+Pj/u7u7/zc3N/8TExP/kZGR//b29v//////////////////////////////////////////////////////////////////////////////////////////////////////nZ2d/wEBAf8AAAD/hoaG////////////5+fn/y8vL/8AAAD/HBwc/9DQ0P////////////39/f+Kior/CAgI/wAAAP8AAAD/ExMT/1NTU/+JiYn/mpqa/4aGhv9OTk7/EBAQ/wAAAP8AAAD/GBgY/8bGxv//////////////////////////////////////////////////////////////////////////////////////////////////////1tbW/xsbG/8AAAD/PDw8/+/v7////////////4iIiP8AAAD/AAAA/2BgYP/39/f////////////4+Pj/ioqK/xISEv8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8WFhb/lZWV//n5+f//////////////////////////////////////////////////////////////////////////////////////////////////////+vr6/1lZWf8AAAD/CQkJ/7CwsP///////////+Tk5P8zMzP/AAAA/wkJCf+Xl5f//////////////////Pz8/7q6uv9KSkr/DQ0N/wAAAP8AAAD/AAAA/wAAAP8AAAD/EBAQ/1FRUf/CwsL//f39////////////+vr6/+np6f/+/v7//////////////////////////////////////////////////////////////////////////////////////7Gxsf8JCQn/AAAA/0tLS//z8/P///////////+tra3/Dw8P/wAAAP8WFhb/qqqq//7+/v/////////////////09PT/w8PD/4qKiv9lZWX/Wlpa/2dnZ/+NjY3/x8fH//b29v/////////////////9/f3/nZ2d/zY2Nv+zs7P//f39//////////////////////////////////////////////////////////////////////////////////Ly8v9JSUn/AAAA/wcHB/+fn5/////////////7+/v/gYGB/wUFBf8AAAD/FhYW/5eXl//39/f//////////////////////////////////v7+//////////////////////////////////T09P+NjY3/ERER/wAAAP8hISH/0tLS//////////////////////////////////////////////////////////////////////////////////////+2trb/Dw8P/wAAAP8oKCj/1dXV////////////9PT0/3Fxcf8FBQX/AAAA/wkJCf9gYGD/0dHR//39/f/////////////////////////////////////////////////8/Pz/y8vL/1dXV/8HBwf/AAAA/wgICP98fHz/9vb2///////////////////////////////////////////////////////////////////////////////////////6+vr/bW1t/wAAAP8AAAD/T09P/+vr6/////////////T09P+BgYH/Dg4O/wAAAP8AAAD/Gxsb/2pqav+4uLj/5ubm//n5+f/+/v7///////7+/v/4+Pj/5OTk/7S0tP9jY2P/FxcX/wAAAP8AAAD/EhIS/4yMjP/39/f////////////s7Oz/6enp////////////////////////////////////////////////////////////////////////////4uLi/zo6Ov8AAAD/AQEB/2ZmZv/x8fH////////////7+/v/rq6u/zIyMv8CAgL/AAAA/wAAAP8JCQn/Jycn/0hISP9gYGD/aGho/19fX/9GRkb/JCQk/wgICP8AAAD/AAAA/wMDA/85OTn/tra2//z8/P///////////+zs7P9aWlr/QkJC/9DQ0P///////////////////////////////////////////////////////////////////////////8bGxv8iIiL/AAAA/wMDA/9mZmb/7Ozs/////////////////+Tk5P+IiIj/Li4u/wUFBf8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8HBwf/MzMz/5CQkP/o6Oj/////////////////5ubm/1tbW/8CAgL/AAAA/1JSUv/19fX///////////////////////////////////////////////////////////////////////////+0tLT/Gxsb/wAAAP8CAgL/Tk5O/9bW1v//////////////////////5+fn/6ysrP9ra2v/PDw8/yIiIv8WFhb/EhIS/xYWFv8jIyP/Pz8//29vb/+xsbH/6urq///////////////////////Pz8//RUVF/wEBAf8AAAD/IiIi/729vf////////////////////////////////z/////////////////////////////////////////////////////tLS0/yIiIv8AAAD/AAAA/ygoKP+fn5//8/Pz///////////////////////+/v7/8/Pz/+Pj4//V1dX/0dHR/9bW1v/k5OT/9fX1//7+/v//////////////////////8PDw/5eXl/8iIiL/AAAA/wAAAP8pKSn/vr6+/////////////////////////////////////+7//////////////////////////////////////////////////////////8bGxv86Ojr/AAAA/wAAAP8ICAj/SkpK/7Gxsf/w8PD//////////////////////////////////////////////////////////////////////+7u7v+qqqr/Q0ND/wYGBv8AAAD/AQEB/0JCQv/Ozs7/////////////////////////////////////9v///8r////////////////////////////////////////////////////////////////j4+P/bW1t/w4ODv8AAAD/AAAA/wkJCf87Ozv/hoaG/8TExP/p6en/+fn5////////////////////////////+fn5/+fn5//BwcH/gYGB/zc3N/8HBwf/AAAA/wAAAP8SEhL/dnZ2/+jo6P//////////////////////////////////////////1P///4f/////////////////////////////////////////////////////////////////////+vr6/7e3t/9ISEj/CQkJ/wAAAP8AAAD/AAAA/w0NDf8qKir/S0tL/2ZmZv93d3f/fX19/3Z2dv9lZWX/SUlJ/ygoKP8MDAz/AAAA/wAAAP8AAAD/CwsL/09PT/+/v7//+/v7////////////////////////////////////////////////k////zX////k///////////////////////////////////////////////////////////////////////////z8/P/srKy/1hYWP8aGhr/AgIC/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AwMD/x0dHf9eXl7/uLi4//X19f/////////////////////////////////////////////////////p////Pv///wP///+P//////////////////////////////////////////////////////////////////////////////////////r6+v/X19f/nZ2d/2RkZP86Ojr/ICAg/xISEv8LCwv/CgoK/wwMDP8TExP/ISEh/zw8PP9oaGj/oaGh/9ra2v/7+/v///////////////////////////////////////////////////////////////+Z////BQAAAAD///8h////zf////////////////////////////////////////////////////////////////////////////////////////////////7+/v/y8vL/4eHh/9DQ0P/ExMT/wMDA/8XFxf/R0dH/4uLi//Pz8//+/v7//////////////////////////////////////////////////////////////////////////9T///8nAAAAAAAAAAAAAAAA////QP///97/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////4v///0cAAAAAAAAAAAAAAAAAAAAAAAAAAP///z/////O///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////T////RgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8h////j////+X////+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+////6P///5X///8lAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////BP///zT///+H////yv///+/////9///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9////8P///83///+L////OP///wUAAAAAAAAAAAAAAAAAAAAAAAAAAP4AAAAAfwAA+AAAAAAfAADwAAAAAA8AAOAAAAAABwAAwAAAAAADAACAAAAAAAEAAIAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAIAAAAAAAQAAwAAAAAADAADgAAAAAAcAAPAAAAAADwAA+AAAAAAfAAD+AAAAAH8AACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8o////jf///9v////7/////////////////////////////////////////////////////////////////////////////////////////////////////P///93///+Q////KwAAAAAAAAAAAAAAAAAAAAD///8C////Uv///9X////+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////7////Y////V////wIAAAAAAAAAAP///1L////r///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////t////VwAAAAD///8n////0v/////////////////////////////////////////////////////////////////////19fX/5eXl/+rq6v/////////////////////////////////////////////////////////////////////X////K////4j////+//////////////////////////////////////////////////////n5+f/FxcX/eHh4/z8/P/8eHh7/b29v//////////////////////////////////////////////////////////////////////////+Q////1f/////////////////////////////////////////////////////W1tb/YGBg/w4ODv8BAQH/FRUV/y4uLv+Hh4f//////////////////////////////////////////////////////////////////////////9z////3////////////////////////////////////////////////ubm5/ykpKf8CAgL/ODg4/5iYmP/X19f/8PDw//r6+v//////////////////////////////////////////////////////////////////////////+//////////////////////+/v7//////////////////////76+vv8eHh7/CwsL/319ff/r6+v////////////+/v7/+/v7//39/f///////////////////////////////////////////////////////////////////////////////////////f39/5ubm/+mpqb/9vb2///////h4eH/NDQ0/wgICP+SkpL/+/v7///////r6+v/o6Oj/2VlZf9OTk7/W1tb/46Ojv/a2tr//v7+///////////////////////////////////////////////////////////////////////j4+P/JSUl/ykpKf/m5ub//////3p6ev8AAAD/bm5u//n5+f//////xcXF/z09Pf8DAwP/AAAA/wAAAP8AAAD/AAAA/yIiIv+enp7//Pz8/////////////////////////////////////////////////////////////////7CwsP8CAgL/ZmZm///////e3t7/IiIi/yMjI//b29v//////8zMzP8nJyf/AAAA/zAwMP+FhYX/qamp/5WVlf9JSUn/BAQE/15eXv/5+fn/////////////////////////////////////////////////////////////////fX19/wAAAP+jo6P//////6SkpP8AAAD/cXFx///////29vb/U1NT/wAAAP9OTk7/4ODg//////////////////Hx8f+cnJz/2dnZ//////////////////////////////////////////////////////////////////39/f9YWFj/CgoK/8nJyf//////cXFx/wEBAf+vr6///////8fHx/8PDw//HBwc/9LS0v//////////////////////////////////////////////////////////////////////////////////////////////////////+Pj4/0RERP8WFhb/29vb//////9TU1P/DQ0N/87Ozv//////m5ub/wAAAP9WVlb//Pz8///////////////////////////////////////////////////////////////////////////////////////////////////////29vb/Pz8//xkZGf/f39///f39/0xMTP8RERH/1dXV//////+Ojo7/AAAA/2hoaP////////////////////////////////////////////////////////////////////////////////////////////////////////////n5+f9ISEj/ExMT/9fX1///////Wlpa/wkJCf/IyMj//////6Wlpf8AAAD/R0dH//b29v///////////////////////////////////////////////////////////////////////////////////////////////////////////2FhYf8GBgb/wMDA//////9+fn7/AAAA/6Ghof//////19fX/xsbG/8NDQ3/tbW1////////////////////////////9vb2//v7+///////////////////////////////////////////////////////////////////////ioqK/wAAAP+UlJT//////7W1tf8FBQX/Wlpa//v7+//9/f3/dHR0/wAAAP8pKSn/tra2//j4+P///////Pz8/9PT0/9bW1v/jo6O//f39//////////////////////////////////////////////////////////////////AwMD/CAgI/1NTU//7+/v/7Ozs/zY2Nv8RERH/xMTE///////m5ub/TU1N/wAAAP8PDw//R0dH/2lpaf9WVlb/HR0d/wAAAP8wMDD/39/f/////////////////////////////////////////////////////////////////+7u7v84ODj/ExMT/83Nzf//////m5ub/wMDA/9JSUn/6urq///////m5ub/dHR0/xoaGv8BAQH/AAAA/wAAAP8ODg7/UlJS/8zMzP//////+vr6//Dw8P///////////////////////////////////////////////////////////4+Pj/8AAAD/ampq//z8/P/y8vL/V1dX/wAAAP9hYWH/6+vr///////8/Pz/19fX/6Wlpf+NjY3/mpqa/8fHx//19fX///////n5+f+RkZH/RUVF/9DQ0P//////////////////////////////////////////////////////5eXl/zIyMv8ODg7/s7Oz///////e3t7/QUFB/wEBAf9ISEj/xcXF//v7+/////////////////////////////7+/v/d3d3/bW1t/wkJCf8cHBz/wcHB////////////////////////////////////////////////////////////qqqq/wsLC/8tLS3/09PT///////e3t7/VlZW/wQEBP8SEhL/Wlpa/6Ghof/IyMj/1dXV/87Ozv+wsLD/cXFx/yIiIv8AAAD/MzMz/76+vv//////7Ozs/7u7u//39/f////////////////////////////////////////////6+vr/enp6/wICAv87Ozv/09PT///////y8vL/m5ub/zU1Nf8FBQX/AAAA/wkJCf8RERH/DQ0N/wICAv8BAQH/ISEh/3p6ev/h4eH//////+3t7f9mZmb/DAwM/56env/////////////////////////////////////////////////y8vL/aWlp/wMDA/8tLS3/tLS0//v7+///////7Ozs/7W1tf99fX3/WVlZ/0xMTP9TU1P/cHBw/6SkpP/f39///v7+///////U1NT/UFBQ/wEBAf88PDz/19fX//////////////////////b////////////////////////////////x8fH/enp6/wsLC/8ODg7/aWlp/87Ozv/6+vr//////////////////f39//7+/v////////////7+/v/g4OD/ioqK/yEhIf8CAgL/UFBQ/9zc3P/////////////////////7////0//////////////////////////////////////6+vr/q6ur/zExMf8BAQH/ExMT/1JSUv+UlJT/wcHB/9fX1//f39//29vb/8nJyf+kpKT/Z2dn/yIiIv8BAQH/Gxsb/4aGhv/u7u7//////////////////////////9r///+F/////f//////////////////////////////////////////5ubm/5CQkP83Nzf/CAgI/wAAAP8GBgb/ExMT/xkZGf8WFhb/CgoK/wAAAP8DAwP/JSUl/3Nzc//S0tL//f39///////////////////////////+////jf///yT////P/////////////////////////////////////////////////////+/v7//AwMD/ioqK/2BgYP9ISEj/Pz8//0RERP9YWFj/fX19/7CwsP/k5OT//f39/////////////////////////////////////9T///8pAAAAAP///03////o/////////////////////////////////////////////////////////////////v7+//n5+f/29vb/+Pj4//39/f/////////////////////////////////////////////////////r////UwAAAAAAAAAA////Af///03////R/////f/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+////1P///1H///8CAAAAAAAAAAAAAAAAAAAAAP///yT///+F////1P////f////////////////////////////////////////////////////////////////////////////////////////////////////3////1v///4j///8mAAAAAAAAAAAAAAAA8AAAD+AAAAfAAAADgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAHAAAAD4AAAB/AAAA8oAAAAEAAAACAAAAABACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA////Bv///2T////c/////v///////////////////////////////////////////////v///93///9n////Bv///2T////u///////////////////////////w8PD/5+fn//39/f//////////////////////////7////2f////Y/////////////////////+np6f+JiYn/TExM/3V1df/39/f////////////////////////////////c/////P7+/v/7+/v//////+Li4v9WVlb/bGxs/8nJyf/h4eH/9vb2/////////////////////////////////f/////q6ur/goKC/+np6f9tbW3/fX19/+Li4v96enr/RERE/0pKSv+hoaH//Pz8////////////////////////////vb29/1hYWP/IyMj/S0tL/97e3v9gYGD/WFhY/7u7u/+ioqL/h4eH//j4+P///////////////////////////5ycnP95eXn/p6en/25ubv/Kysr/Ozs7/+Li4v////////////39/f////////////////////////////////+Xl5f/fn5+/6Ghof92dnb/wcHB/0FBQf/w8PD/////////////////////////////////////////////////rq6u/2ZmZv+8vLz/VlZW/97e3v9AQED/lZWV//Ly8v/g4OD/tra2//f39////////////////////////////9vb2/9KSkr/0dHR/1JSUv+urq7/wMDA/z8/P/9AQED/OTk5/2lpaf/t7e3/9fX1///////////////////////9/f3/cHBw/4aGhv++vr7/QkJC/6+vr//f39//wcHB/8vLy//f39//fn5+/5GRkf///////////////////////////9ra2v9GRkb/qqqq/7+/v/9SUlL/VlZW/3Z2dv9ubm7/SkpK/3BwcP/T09P/k5OT/93d3f///////////P//////////xcXF/0ZGRv+Ghob/0tLS/7y8vP+hoaH/p6en/8rKyv/FxcX/XV1d/2VlZf/s7Oz//////f///9f////////////////b29v/cHBw/0hISP9mZmb/f39//3l5ef9ZWVn/SkpK/5aWlv/y8vL//////////9r///9h////7f////////////////z8/P/b29v/rq6u/5aWlv+bm5v/vLy8/+vr6////////////////+7///9l////Bf///2H////Z/////f///////////////////////////////////////////////f///9r///9j////BsADAACAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAMADAAA=">
+<style>
+  :root {
+    --bg:#fff; --fg:#202020; --dim:#6c6c6c; --line:#e9e9e9; --line2:#d0d0d0; --fill:#f3f3f3;
+    --ok:#0f9c43; --warn:#b07d00; --bad:#d93a22; --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;background:var(--bg);color:var(--fg);font:14px/1.45 var(--sans);
+       -webkit-font-smoothing:antialiased}
+  main{max-width:820px;margin:0 auto;padding:0 20px 72px}
+  header{border-bottom:1px solid var(--line);margin-bottom:28px}
+  .top{max-width:820px;margin:0 auto;padding:12px 20px;display:flex;gap:12px;align-items:center}
+  .top .sp{flex:1}
+  h2{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);
+     font-weight:600;margin:26px 0 0;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .row{display:flex;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+  .what{flex:1;min-width:0}
+  .what b{font-weight:500;font-size:13.5px}
+  .what small{display:block;color:var(--dim);font-size:12px;margin-top:1px}
+  .mono{font-family:var(--mono);font-size:11.5px}
+  .st{font-size:12px;font-weight:500;white-space:nowrap;font-family:var(--mono)}
+  .ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)} .dim{color:var(--dim)}
+  button{font:500 13px var(--sans);padding:5px 12px;border:1px solid var(--line2);border-radius:2px;
+         background:transparent;color:var(--fg);cursor:pointer;white-space:nowrap}
+  button:hover:not(:disabled){border-color:var(--fg)}
+  button.go{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+  button.go:hover:not(:disabled){opacity:.85}
+  button:disabled{opacity:.35;cursor:not-allowed}
+  input,select{font:13px var(--sans);padding:5px 8px;border:1px solid var(--line);border-radius:2px;
+               background:var(--bg);color:var(--fg);width:100%}
+  input:focus,select:focus{outline:none;border-color:var(--fg)}
+  input.m,select.m{font-family:var(--mono);font-size:11.5px}
+  .grid{display:grid;grid-template-columns:112px 1fr;gap:8px 14px;align-items:center;padding:14px 0}
+  .grid label{color:var(--dim);font-size:12.5px}
+  .note{border-left:2px solid var(--line2);background:var(--fill);padding:8px 11px;margin:0 0 11px;
+        color:var(--dim);font-size:12.5px;line-height:1.5}
+  .note b{color:var(--fg);font-weight:500}
+  .log{margin-top:26px;font-family:var(--mono);font-size:11.5px;color:var(--dim);
+       white-space:pre-wrap;max-height:190px;overflow:auto}
+  .brand{display:flex;align-items:baseline;gap:8px}
+  .brand svg{height:20px;width:auto;color:var(--fg);align-self:center}
+  .brand b{font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .bad-note{border-left-color:var(--bad)}
+  a.st{text-decoration:none;border-bottom:1px solid transparent}
+  a.st:hover{border-bottom-color:currentColor}
+  dialog{border:1px solid var(--line2);border-radius:2px;background:var(--bg);color:var(--fg);
+         padding:0;max-width:520px;width:calc(100% - 40px)}
+  dialog::backdrop{background:rgba(32,32,32,.35)}
+  dialog .dh{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line)}
+  dialog .dh b{font-size:14px;font-weight:600;flex:1}
+  dialog .db{padding:13px 16px}
+  dialog .db .kv{display:flex;justify-content:space-between;gap:14px;padding:5px 0;font-size:12.5px}
+  dialog .db .kv span:first-child{color:var(--dim)}
+  dialog .db ol{margin:6px 0 0;padding-left:22px}
+  dialog .db li{font-family:var(--mono);font-size:11.5px;padding:2px 0}
+  dialog .df{padding:0 16px 14px;display:flex;gap:8px;flex-wrap:wrap}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.9}}
+  .busy{animation:pulse 1.1s ease-in-out infinite}
+  .hide{display:none!important}
+  a{color:var(--fg)}
+</style>
+</head>
+<body>
+<header><div class="top">
+  <span class="brand"><svg viewBox="0 0 46 42" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M24.50772,38.96096c-8.0131,0-14.50908-6.49602-14.50908-14.50924s6.49599-14.50914,14.50908-14.50914c4.46189,0,8.45274,2.0147,11.11427,5.18328l2.34053-1.96395c-3.22193-3.83563-8.05357-6.27386-13.4548-6.27386-9.7002,0-17.56368,7.86348-17.56368,17.56368s7.86348,17.56377,17.56368,17.56377v-3.05453Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M5.12478,33.49048c-1.28242-2.74536-1.99875-5.80829-1.99875-9.0385C3.12603,12.64303,12.69903,3.07008,24.50798,3.07008c6.57538,0,12.45738,2.96824,16.37964,7.63777l2.34-1.96347C38.74497,3.40779,32.0227.01549,24.50798.01549,11.01208.01549.07149,10.95605.07149,24.45198c0,3.69166.81861,7.19214,2.28427,10.32971l2.76902-1.29121Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M29.7727,28.86973c-1.26073,1.50079-3.1511,2.45511-5.26459,2.45511-3.79572,0-6.87272-3.077-6.87272-6.87272s3.077-6.87272,6.87272-6.87272c2.11348,0,4.00385.95432,5.26459,2.45524l2.63236-2.20874c-1.89116-2.25145-4.72665-3.68286-7.89694-3.68286-5.69359,0-10.30908,4.6155-10.30908,10.30908s4.6155,10.30921,10.30908,10.30921c2.90539,0,5.52908-1.20292,7.4029-3.13665l-2.13831-2.75495Z"/></svg><b>Centrifuge Deployer</b></span>
+  <span class="sp"></span>
+  <span id="walletChain" class="st dim"></span>
+  <span id="wallet" class="mono dim"></span>
+  <button id="connect" class="go">Connect wallet</button>
+</div></header>
+
+<main>
+  <p class="note bad-note hide" id="err"></p>
+
+  <h2>Network</h2>
+  <div class="grid">
+    <label for="network">Chain</label>
+    <select id="network"></select>
+    <label for="rpcPick" id="rpcPickLabel">Endpoints</label>
+    <select id="rpcPick" class="m"><option value="">pick a chain</option></select>
+    <label for="rpc">RPC</label>
+    <input id="rpc" class="m" placeholder="https://..." autocomplete="off" spellcheck="false">
+    <label for="explorer">Explorer</label>
+    <input id="explorer" class="m" placeholder="https://… (optional, when none is known)"
+           autocomplete="off" spellcheck="false">
+    <label for="customName" id="customNameLabel" class="hide">Name</label>
+    <input id="customName" class="hide" placeholder="My chain">
+  </div>
+
+  <h2>Prerequisites</h2>
+  <div id="prereqs">
+    <div class="row" data-k="createx">
+      <div class="what"><b>CreateX</b><small class="mono">0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed</small></div>
+      <span class="st dim">· unchecked</span>
+    </div>
+    <div class="row" data-k="gate">
+      <div class="what"><b>DeployGate</b><small class="mono">0x6A7E000000007f5bB2913f18AfCfe1B402ce1e4A</small></div>
+      <span class="st dim">· unchecked</span>
+      <button data-act="connect" class="hide">Connect wallet</button>
+      <button data-act="deployGate" class="hide" disabled>Deploy gate</button>
+    </div>
+    <div class="row" data-k="safeInfra">
+      <div class="what"><b>Safe 1.4.1 contracts</b><small>proxy factory, singletons, fallback handler, SafeToL2Setup</small></div>
+      <span class="st dim">· unchecked</span>
+    </div>
+    <p class="note hide" id="createxNote" style="margin-top:11px">
+      <b>No CreateX here.</b> It goes up first and not from this page: it is a presigned transaction from a
+      fixed account that needs funding on the chain. Follow
+      <a href="https://github.com/pcaversaccio/createx#new-deployments" target="_blank" rel="noopener">the CreateX instructions</a>, then check again.
+    </p>
+  </div>
+
+  <h2>Chain compatibility</h2>
+  <div id="compat">
+    <div class="row" data-k="cancun">
+      <div class="what"><b>EVM at Cancun</b><small>transient storage, MCOPY, PUSH0: the contracts are compiled for Cancun</small></div>
+      <span class="st dim">· unchecked</span>
+    </div>
+    <div class="row" data-k="bridges">
+      <div class="what"><b>Cross-chain messaging</b><small>LayerZero V2, Chainlink CCIP or Hyperlane: one required, two preferred</small></div>
+      <span class="st dim">· unchecked</span>
+    </div>
+    <div class="row" data-k="explorer">
+      <div class="what"><b>Block explorer</b><small>with a contract verification API</small></div>
+      <span class="st dim">· unchecked</span>
+    </div>
+    <p class="note" style="margin-top:11px"><b>Confirm by hand:</b> two independent RPC providers, one of
+      them Alchemy, Infura or QuickNode; USDC, native or bridged, with a fiat off-ramp; Fordefi, for Anemoy
+      and deRWA tokens; opcode pricing against evm.codes; Tenderly and HyperSync, both optional. A DVN roster
+      here means those DVNs run on the chain, not that they are configured for our OApp.</p>
+  </div>
+
+  <h2>Admin Safes</h2>
+  <div id="safes"></div>
+  <div class="row" data-k="nested">
+    <div class="what"><b>Cantina nested Safe</b><small class="mono">0xb307f0b2eDdB84EF63f3F9dc99a3A1a66D68EB3a</small></div>
+    <span class="st dim">· unchecked</span>
+  </div>
+  <p class="note hide" data-k="nestednote" style="margin-top:11px"></p>
+
+
+  <h2>Namespace</h2>
+  <div id="namespace">
+    <div class="row hide" data-k="gasNs">
+      <div class="what"><b>Gas for the namespace</b><small class="mono"></small></div>
+      <span class="st dim">· unchecked</span>
+      <button data-act="fundNs" class="hide">Send from wallet</button>
+    </div>
+    <p class="note hide" data-k="gasNsNote" style="margin-top:11px"></p>
+    <div class="row" data-k="delay">
+      <div class="what"><b>Delegate delay</b><small>6 hours (21600s), and it must land before either delegation</small></div>
+      <span class="st dim">· unchecked</span>
+      <button data-act="connect" class="hide">Connect wallet</button>
+      <button data-act="setDelay" class="hide" disabled>Set 6h delay</button>
+    </div>
+    <div class="row" data-k="delegate0">
+      <div class="what"><b>Delegate: protocolAdmin</b><small class="mono"></small></div>
+      <span class="st dim">· unchecked</span>
+      <button data-act="connect" class="hide">Connect wallet</button>
+      <button data-act="delegate0" class="hide" disabled>Add delegate</button>
+    </div>
+    <div class="row" data-k="delegate1">
+      <div class="what"><b>Delegate: opsAdmin</b><small class="mono"></small></div>
+      <span class="st dim">· unchecked</span>
+      <button data-act="connect" class="hide">Connect wallet</button>
+      <button data-act="delegate1" class="hide" disabled>Add delegate</button>
+    </div>
+    <p class="note hide" id="nsSignerNote" style="margin-top:11px">
+      <b>Wrong account.</b> These are the namespace's own calls, so they have to come from
+      <span class="mono" id="nsSignerWant"></span>. Switch to it in your wallet.
+    </p>
+    <p class="note" style="margin-top:11px">A commitment carries the delay that stood when it was made,
+      so a delegate named while the delay is still zero can commit something deployable in the same block. If
+      the order goes wrong, <code class="mono">clear()</code> on the gate is the way back.</p>
+  </div>
+
+  <div class="log" id="log"></div>
+</main>
+
+<dialog id="pop">
+  <div class="dh"><b id="popTitle"></b><button id="popClose">Close</button></div>
+  <div class="db" id="popBody"></div>
+  <div class="df" id="popFoot"></div>
+</dialog>
+
+<script>
+"use strict";
+const CFG = {
+  gate:      "0x6A7E000000007f5bB2913f18AfCfe1B402ce1e4A",
+  gateSalt:  "0x252d679b5d196d022b5bcc000000000000000000000000000000000000000000",
+  gateInit:  "0x6080604052348015600f57600080fd5b5061130a8061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100af5760003560e01c806310f49707146100b45780633d0a4061146100c95780633eae65af146100dc5780634a994eef146101025780635fec5d0b146101155780638b1592b51461013857806399ec89f8146101be5780639f5e88db146101d1578063b588333914610225578063c107330214610238578063ce9076ac1461024b578063e99718d81461025e578063eff45b7814610289575b600080fd5b6100c76100c2366004610ebd565b61029c565b005b6100c76100d7366004610f7a565b61037c565b6100ef6100ea366004610f95565b61044f565b6040519081526020015b60405180910390f35b6100c7610110366004610fb7565b610486565b610128610123366004610ff3565b610509565b60405190151581526020016100f9565b61018b610146366004611026565b60026020908152600092835260408084209091529082529020546001600160401b0380821691600160401b8104821691600160801b8204811691600160c01b90041684565b604080516001600160401b03958616815293851660208501529184169183019190915290911660608201526080016100f9565b6100ef6101cc366004611026565b61054e565b6102056101df366004610f7a565b6000602081905290815260409020546001600160401b0380821691600160401b90041682565b604080516001600160401b039384168152929091166020830152016100f9565b6100ef610233366004611050565b610572565b6100c7610246366004611083565b6105fe565b6101286102593660046110ac565b61066a565b61027161026c366004611026565b6106fb565b6040516001600160a01b0390911681526020016100f9565b6102716102973660046110e8565b610717565b87336001600160a01b03821614806102b957506102b98133610509565b6102d65760405163ea8e4eb560e01b815260040160405180910390fd5b8584146102f9576040516001621398b960e31b0319815260040160405180910390fd5b600080600061030e8c8c8c8c8c8c8c8c6109a1565b925092509250826001600160401b03168b8d6001600160a01b03167fdbbd9862492c8b2c78c9bf9f868afc83ef66655ed0b67d751246b338c7c65bf784868f8f8f8f8f8f6040516103669897969594939291906111ae565b60405180910390a4505050505050505050505050565b80336001600160a01b038216148061039957506103998133610509565b6103b65760405163ea8e4eb560e01b815260040160405180910390fd5b6001600160a01b0382166000908152602081905260408120805482906103e4906001600160401b0316611256565b91906101000a8154816001600160401b0302191690836001600160401b0316021790559050826001600160a01b03167f5c811a385abb411617f9acc587ed0da45a3f65efbe647eb47d9d6b55cb5e06d6826040516104429190611282565b60405180910390a2505050565b60408051602081018490529081018290526000906060015b6040516020818303038152906040528051906020012090505b92915050565b336000818152600160209081526040808320838352818420546001600160401b0316845282528083206001600160a01b03871680855290835292819020805460ff191686151590811790915590519081529192917fb2bc8cf66f9066661e08c63852f7326abbdf87ed2b434ab573f34e0ba9feabe2910160405180910390a35050565b6001600160a01b039182166000908152600160209081526040808320838352818420546001600160401b03168452825280832093909416825291909152205460ff1690565b604080516001600160a01b0384166020820152908101829052600090606001610467565b6001600160a01b03831660009081526020819052604081205460049082906105a59087906001600160401b031687610c4e565b8152602080820192909252604090810160009081206001600160a01b039790971681526002835281812095815294825280852054600160401b90046001600160401b031685529481528484209284529190915250205490565b33600081815260208190526040908190208054600160401b600160801b031916600160401b6001600160401b03861602179055517fd4949d4bbf528f3d9a0163b849033f6a0a6352e233eaf43b1545024857ae06f49061065f908490611282565b60405180910390a250565b6001600160a01b038316600090815260208190526040812054600390829061069d9087906001600160401b031687610c4e565b8152602080820192909252604090810160009081206001600160a01b0397881682526002845282822096825295835281812054600160401b90046001600160401b031681529482528085209390951684529190915250205460ff1690565b600061071061070a848461054e565b30610c9e565b9392505050565b6001600160a01b03851660008181526002602090815260408083208884528252808320938352908290528120549091906001600160401b03168261075c89838a610c4e565b83546000828152600360209081526040808320600160401b9094046001600160401b03168084529382528083203384529091529020549192509060ff166107b6576040516361968ebb60e11b815260040160405180910390fd5b8354600160c01b90046001600160401b031680428111156107f4576040516343b8b7dd60e01b81526004016107eb9190611282565b60405180910390fd5b50600061082a898960405161080a929190611296565b6040519081900390208754600160801b90046001600160401b031661044f565b60008581526004602090815260408083206001600160401b038816845282528083208e84529091529020549091508a90821461087c57604051634ebe8a4d60e01b81526004016107eb91815260200190565b5060008481526004602090815260408083206001600160401b0380881685529083528184208e8552909252822091909155865487916010916108c691600160801b90910416611256565b91906101000a8154816001600160401b0302191690836001600160401b031602179055506109336108f78d8c61054e565b8a8a8080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250610d4a92505050565b604080516001600160401b038089168252861660208201529081018c90529097506001600160a01b03808916918d918f16907fcce4829ae7f4851569ffe0ca1e6ed1868d1d4897ad72685040bd56ca36c688d69060600160405180910390a450505050505095945050505050565b6001600160a01b038816600081815260208190526040812054909182916001600160401b0316903314610a0c576001600160a01b038b16600090815260208190526040902054600160401b90046001600160401b03168015610a0a57610a0781426112a6565b92505b505b6001600160a01b038b1660009081526002602090815260408083208d8452909152902080548190600890610a4f90600160401b90046001600160401b0316611256565b82546101009290920a6001600160401b038181021990931682841691909102179092558254848216600160401b600160801b0390911617600160c01b9186169190910217825593506000610aa48d848e610c4e565b905060005b86811015610b2d5760008281526003602090815260408083206001600160401b038a16845290915281206001918a8a85818110610ae857610ae86112c5565b9050602002016020810190610afd9190610f7a565b6001600160a01b031681526020810191909152604001600020805460ff1916911515919091179055600101610aa9565b5060005b8a811015610c3d5760008281526004602090815260408083206001600160401b038a1684529091528120908d8d84818110610b6e57610b6e6112c5565b905060200201358152602001908152602001600020546000801b148c8c83818110610b9b57610b9b6112c5565b9050602002013590610bc357604051633dceb23760e11b81526004016107eb91815260200190565b50610be68a8a83818110610bd957610bd96112c5565b905060200201358261044f565b60008381526004602090815260408083206001600160401b038b1684529091528120908e8e85818110610c1b57610c1b6112c5565b6020908102929092013583525081019190915260400160002055600101610b31565b505050985098509895505050505050565b604080516001600160a01b03851660208201526001600160401b03841691810191909152606081018290526000906080016040516020818303038152906040528051906020012090509392505050565b604080516001600160f81b03196020808301919091526001600160601b0319606094851b8116602184015260358301959095527f21c35dbe1b344a2488cf3321d6ce542f8e9f305544ff09e4993a62319a497c1f605580840191909152835180840390910181526075830184528051908201206135a560f21b609584015290931b9093166097840152600160f81b60ab8401528051808403608c01815260ac9093019052815191012090565b6000610d568330610c9e565b905060006040518060400160405280601081526020016f67363d3d37363d34f03d5260086018f360801b81525090506000848251602084016000f590506001600160a01b038116610dba57604051633c846ca160e21b815260040160405180910390fd5b6000816001600160a01b031685604051610dd491906112db565b6000604051808303816000865af19150503d8060008114610e11576040519150601f19603f3d011682016040523d82523d6000602084013e610e16565b606091505b50509050808015610e3057506001600160a01b0384163b15155b610e4d57604051634b161dbd60e01b815260040160405180910390fd5b50505092915050565b80356001600160a01b0381168114610e6d57600080fd5b919050565b60008083601f840112610e8457600080fd5b5081356001600160401b03811115610e9b57600080fd5b6020830191508360208260051b8501011115610eb657600080fd5b9250929050565b60008060008060008060008060a0898b031215610ed957600080fd5b610ee289610e56565b97506020890135965060408901356001600160401b03811115610f0457600080fd5b610f108b828c01610e72565b90975095505060608901356001600160401b03811115610f2f57600080fd5b610f3b8b828c01610e72565b90955093505060808901356001600160401b03811115610f5a57600080fd5b610f668b828c01610e72565b999c989b5096995094979396929594505050565b600060208284031215610f8c57600080fd5b61071082610e56565b60008060408385031215610fa857600080fd5b50508035926020909101359150565b60008060408385031215610fca57600080fd5b610fd383610e56565b915060208301358015158114610fe857600080fd5b809150509250929050565b6000806040838503121561100657600080fd5b61100f83610e56565b915061101d60208401610e56565b90509250929050565b6000806040838503121561103957600080fd5b61104283610e56565b946020939093013593505050565b60008060006060848603121561106557600080fd5b61106e84610e56565b95602085013595506040909401359392505050565b60006020828403121561109557600080fd5b81356001600160401b038116811461071057600080fd5b6000806000606084860312156110c157600080fd5b6110ca84610e56565b9250602084013591506110df60408501610e56565b90509250925092565b60008060008060006080868803121561110057600080fd5b61110986610e56565b9450602086013593506040860135925060608601356001600160401b0381111561113257600080fd5b8601601f8101881361114357600080fd5b80356001600160401b0381111561115957600080fd5b88602082840101111561116b57600080fd5b959894975092955050506020019190565b81835260006001600160fb1b0383111561119557600080fd5b8260051b80836020870137939093016020019392505050565b6001600160401b0389811682528816602082015260a0604082018190526000906111db908301888a61117c565b82810360608401526111ee81878961117c565b838103608085015284815285915060200160005b85811015611230576001600160a01b0361121b84610e56565b16825260209283019290910190600101611202565b509b9a5050505050505050505050565b634e487b7160e01b600052601160045260246000fd5b60006001600160401b0382166002600160401b0319810161127957611279611240565b60010192915050565b6001600160401b0391909116815260200190565b8183823760009101908152919050565b6001600160401b03818116838216019081111561048057610480611240565b634e487b7160e01b600052603260045260246000fd5b6000825160005b818110156112fc57602081860181015185830152016112e2565b50600092019182525091905056",
+  gateCode:  "0x608060405234801561001057600080fd5b50600436106100af5760003560e01c806310f49707146100b45780633d0a4061146100c95780633eae65af146100dc5780634a994eef146101025780635fec5d0b146101155780638b1592b51461013857806399ec89f8146101be5780639f5e88db146101d1578063b588333914610225578063c107330214610238578063ce9076ac1461024b578063e99718d81461025e578063eff45b7814610289575b600080fd5b6100c76100c2366004610ebd565b61029c565b005b6100c76100d7366004610f7a565b61037c565b6100ef6100ea366004610f95565b61044f565b6040519081526020015b60405180910390f35b6100c7610110366004610fb7565b610486565b610128610123366004610ff3565b610509565b60405190151581526020016100f9565b61018b610146366004611026565b60026020908152600092835260408084209091529082529020546001600160401b0380821691600160401b8104821691600160801b8204811691600160c01b90041684565b604080516001600160401b03958616815293851660208501529184169183019190915290911660608201526080016100f9565b6100ef6101cc366004611026565b61054e565b6102056101df366004610f7a565b6000602081905290815260409020546001600160401b0380821691600160401b90041682565b604080516001600160401b039384168152929091166020830152016100f9565b6100ef610233366004611050565b610572565b6100c7610246366004611083565b6105fe565b6101286102593660046110ac565b61066a565b61027161026c366004611026565b6106fb565b6040516001600160a01b0390911681526020016100f9565b6102716102973660046110e8565b610717565b87336001600160a01b03821614806102b957506102b98133610509565b6102d65760405163ea8e4eb560e01b815260040160405180910390fd5b8584146102f9576040516001621398b960e31b0319815260040160405180910390fd5b600080600061030e8c8c8c8c8c8c8c8c6109a1565b925092509250826001600160401b03168b8d6001600160a01b03167fdbbd9862492c8b2c78c9bf9f868afc83ef66655ed0b67d751246b338c7c65bf784868f8f8f8f8f8f6040516103669897969594939291906111ae565b60405180910390a4505050505050505050505050565b80336001600160a01b038216148061039957506103998133610509565b6103b65760405163ea8e4eb560e01b815260040160405180910390fd5b6001600160a01b0382166000908152602081905260408120805482906103e4906001600160401b0316611256565b91906101000a8154816001600160401b0302191690836001600160401b0316021790559050826001600160a01b03167f5c811a385abb411617f9acc587ed0da45a3f65efbe647eb47d9d6b55cb5e06d6826040516104429190611282565b60405180910390a2505050565b60408051602081018490529081018290526000906060015b6040516020818303038152906040528051906020012090505b92915050565b336000818152600160209081526040808320838352818420546001600160401b0316845282528083206001600160a01b03871680855290835292819020805460ff191686151590811790915590519081529192917fb2bc8cf66f9066661e08c63852f7326abbdf87ed2b434ab573f34e0ba9feabe2910160405180910390a35050565b6001600160a01b039182166000908152600160209081526040808320838352818420546001600160401b03168452825280832093909416825291909152205460ff1690565b604080516001600160a01b0384166020820152908101829052600090606001610467565b6001600160a01b03831660009081526020819052604081205460049082906105a59087906001600160401b031687610c4e565b8152602080820192909252604090810160009081206001600160a01b039790971681526002835281812095815294825280852054600160401b90046001600160401b031685529481528484209284529190915250205490565b33600081815260208190526040908190208054600160401b600160801b031916600160401b6001600160401b03861602179055517fd4949d4bbf528f3d9a0163b849033f6a0a6352e233eaf43b1545024857ae06f49061065f908490611282565b60405180910390a250565b6001600160a01b038316600090815260208190526040812054600390829061069d9087906001600160401b031687610c4e565b8152602080820192909252604090810160009081206001600160a01b0397881682526002845282822096825295835281812054600160401b90046001600160401b031681529482528085209390951684529190915250205460ff1690565b600061071061070a848461054e565b30610c9e565b9392505050565b6001600160a01b03851660008181526002602090815260408083208884528252808320938352908290528120549091906001600160401b03168261075c89838a610c4e565b83546000828152600360209081526040808320600160401b9094046001600160401b03168084529382528083203384529091529020549192509060ff166107b6576040516361968ebb60e11b815260040160405180910390fd5b8354600160c01b90046001600160401b031680428111156107f4576040516343b8b7dd60e01b81526004016107eb9190611282565b60405180910390fd5b50600061082a898960405161080a929190611296565b6040519081900390208754600160801b90046001600160401b031661044f565b60008581526004602090815260408083206001600160401b038816845282528083208e84529091529020549091508a90821461087c57604051634ebe8a4d60e01b81526004016107eb91815260200190565b5060008481526004602090815260408083206001600160401b0380881685529083528184208e8552909252822091909155865487916010916108c691600160801b90910416611256565b91906101000a8154816001600160401b0302191690836001600160401b031602179055506109336108f78d8c61054e565b8a8a8080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250610d4a92505050565b604080516001600160401b038089168252861660208201529081018c90529097506001600160a01b03808916918d918f16907fcce4829ae7f4851569ffe0ca1e6ed1868d1d4897ad72685040bd56ca36c688d69060600160405180910390a450505050505095945050505050565b6001600160a01b038816600081815260208190526040812054909182916001600160401b0316903314610a0c576001600160a01b038b16600090815260208190526040902054600160401b90046001600160401b03168015610a0a57610a0781426112a6565b92505b505b6001600160a01b038b1660009081526002602090815260408083208d8452909152902080548190600890610a4f90600160401b90046001600160401b0316611256565b82546101009290920a6001600160401b038181021990931682841691909102179092558254848216600160401b600160801b0390911617600160c01b9186169190910217825593506000610aa48d848e610c4e565b905060005b86811015610b2d5760008281526003602090815260408083206001600160401b038a16845290915281206001918a8a85818110610ae857610ae86112c5565b9050602002016020810190610afd9190610f7a565b6001600160a01b031681526020810191909152604001600020805460ff1916911515919091179055600101610aa9565b5060005b8a811015610c3d5760008281526004602090815260408083206001600160401b038a1684529091528120908d8d84818110610b6e57610b6e6112c5565b905060200201358152602001908152602001600020546000801b148c8c83818110610b9b57610b9b6112c5565b9050602002013590610bc357604051633dceb23760e11b81526004016107eb91815260200190565b50610be68a8a83818110610bd957610bd96112c5565b905060200201358261044f565b60008381526004602090815260408083206001600160401b038b1684529091528120908e8e85818110610c1b57610c1b6112c5565b6020908102929092013583525081019190915260400160002055600101610b31565b505050985098509895505050505050565b604080516001600160a01b03851660208201526001600160401b03841691810191909152606081018290526000906080016040516020818303038152906040528051906020012090509392505050565b604080516001600160f81b03196020808301919091526001600160601b0319606094851b8116602184015260358301959095527f21c35dbe1b344a2488cf3321d6ce542f8e9f305544ff09e4993a62319a497c1f605580840191909152835180840390910181526075830184528051908201206135a560f21b609584015290931b9093166097840152600160f81b60ab8401528051808403608c01815260ac9093019052815191012090565b6000610d568330610c9e565b905060006040518060400160405280601081526020016f67363d3d37363d34f03d5260086018f360801b81525090506000848251602084016000f590506001600160a01b038116610dba57604051633c846ca160e21b815260040160405180910390fd5b6000816001600160a01b031685604051610dd491906112db565b6000604051808303816000865af19150503d8060008114610e11576040519150601f19603f3d011682016040523d82523d6000602084013e610e16565b606091505b50509050808015610e3057506001600160a01b0384163b15155b610e4d57604051634b161dbd60e01b815260040160405180910390fd5b50505092915050565b80356001600160a01b0381168114610e6d57600080fd5b919050565b60008083601f840112610e8457600080fd5b5081356001600160401b03811115610e9b57600080fd5b6020830191508360208260051b8501011115610eb657600080fd5b9250929050565b60008060008060008060008060a0898b031215610ed957600080fd5b610ee289610e56565b97506020890135965060408901356001600160401b03811115610f0457600080fd5b610f108b828c01610e72565b90975095505060608901356001600160401b03811115610f2f57600080fd5b610f3b8b828c01610e72565b90955093505060808901356001600160401b03811115610f5a57600080fd5b610f668b828c01610e72565b999c989b5096995094979396929594505050565b600060208284031215610f8c57600080fd5b61071082610e56565b60008060408385031215610fa857600080fd5b50508035926020909101359150565b60008060408385031215610fca57600080fd5b610fd383610e56565b915060208301358015158114610fe857600080fd5b809150509250929050565b6000806040838503121561100657600080fd5b61100f83610e56565b915061101d60208401610e56565b90509250929050565b6000806040838503121561103957600080fd5b61104283610e56565b946020939093013593505050565b60008060006060848603121561106557600080fd5b61106e84610e56565b95602085013595506040909401359392505050565b60006020828403121561109557600080fd5b81356001600160401b038116811461071057600080fd5b6000806000606084860312156110c157600080fd5b6110ca84610e56565b9250602084013591506110df60408501610e56565b90509250925092565b60008060008060006080868803121561110057600080fd5b61110986610e56565b9450602086013593506040860135925060608601356001600160401b0381111561113257600080fd5b8601601f8101881361114357600080fd5b80356001600160401b0381111561115957600080fd5b88602082840101111561116b57600080fd5b959894975092955050506020019190565b81835260006001600160fb1b0383111561119557600080fd5b8260051b80836020870137939093016020019392505050565b6001600160401b0389811682528816602082015260a0604082018190526000906111db908301888a61117c565b82810360608401526111ee81878961117c565b838103608085015284815285915060200160005b85811015611230576001600160a01b0361121b84610e56565b16825260209283019290910190600101611202565b509b9a5050505050505050505050565b634e487b7160e01b600052601160045260246000fd5b60006001600160401b0382166002600160401b0319810161127957611279611240565b60010192915050565b6001600160401b0391909116815260200190565b8183823760009101908152919050565b6001600160401b03818116838216019081111561048057610480611240565b634e487b7160e01b600052603260045260246000fd5b6000825160005b818110156112fc57602081860181015185830152016112e2565b50600092019182525091905056",
+  createx:   "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+  namespace: "0x926702c7f1AF679a8F99a40aF8917dDd82Fd6f6C",
+  delay:     21600,
+  safeInfra: {
+    "SafeProxyFactory":  "0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67",
+    "Safe singleton":    "0x41675C099F32341bf84BFc5382aF534df5C7461a",
+    "SafeL2 singleton":  "0x29fcB43b46531BcA003ddC8FCB67FFE91900C762",
+    "FallbackHandler":   "0xfd0732Dc9E303f09fCEf3a7388Ad10A83459Ec99",
+    "SafeToL2Setup":     "0xBD89A1CE4DDe368FFAB0eC35506eEcE0b1fFdc54"
+  },
+  safeFactory: "0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67",
+  // One of protocolAdmin's nine owners is itself a Safe, held by Cantina. It has to exist on the chain
+  // and look like its Ethereum self, or that seat cannot sign: an address with no code signs nothing.
+  nested: { address: "0xb307f0b2eDdB84EF63f3F9dc99a3A1a66D68EB3a", want: "1/2", ownerOf: "protocolAdmin" },
+  // The signer the Safe work is sent from: an owner of both Safes, and one of the two the protocolAdmin
+  // replay comes up with, so it can drive the reconciliation while the threshold is still 1
+  safeSigner: "0x9eDec77dd2651Ce062ab17e941347018AD4eAEA9",
+  // Read once and cached: what the two Safes look like on Ethereum, which is what every other chain
+  // is compared against. Several endpoints because this must not depend on one staying up.
+  ethRpcs: ["https://ethereum-rpc.publicnode.com", "https://eth.drpc.org", "https://rpc.mevblocker.io",
+            "https://mainnet.gateway.tenderly.co"],
+  safes: [
+    { key:"protocolAdmin", address:"0x9711730060C73Ee7Fcfe1890e8A0993858a7D225",
+      want:"4/9", calldata:"0x1688f0b900000000000000000000000041675c099f32341bf84bfc5382af534df5c7461a0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c4b63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000bd89a1ce4dde368ffab0ec35506eece0b1ffdc540000000000000000000000000000000000000000000000000000000000000160000000000000000000000000fd0732dc9e303f09fcef3a7388ad10a83459ec99000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005afe7a11e70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000d55114bfe98a2ca16202aa741bee5717652926160000000000000000000000009edec77dd2651ce062ab17e941347018ad4eaea90000000000000000000000000000000000000000000000000000000000000024fe51f64300000000000000000000000029fcb43b46531bca003ddc8fcb67ffe91900c7620000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      // The reconciliation is not assembled here: these are the exact bytes executed as nonce 0 on
+      // Linea, Base and Gnosis, byte-identical on all three, fetched from the Safe transaction service.
+      // Seven calls, the threshold rising with the owner count and never exceeding it, ending at 4 of 9.
+      // Reviewable once, diffable against those chains, and refused against any state but the replay's.
+      reconcile: {
+        fromOwners: ["0xd55114BfE98a2ca16202Aa741BeE571765292616", "0x9eDec77dd2651Ce062ab17e941347018AD4eAEA9"],
+        fromThreshold: 1, threshold: 4, calls: 7,
+        adds: ["0x080001dBE12fA46A1d7C03fa0Cbf1839E367F155", "0x4d47a7a89478745200Bd51c26bA87664538Df541",
+               "0xE9441B34f71659cCA2bfE90d98ee0e57D9CAD28F", "0x5e7A86178252Aeae9cBDa30f9C342c71799A3EE1",
+               "0x701Da7A0c8ee46521955CC29D32943d47E2c02b9", "0x044671aCf58340Ac9d7AB782D3F93D1943fE24Bf",
+               "0xb307f0b2eDdB84EF63f3F9dc99a3A1a66D68EB3a"],
+        data: "0x8d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000042f009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f13000000000000000000000000080001dbe12fa46a1d7c03fa0cbf1839e367f1550000000000000000000000000000000000000000000000000000000000000003009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f130000000000000000000000004d47a7a89478745200bd51c26ba87664538df5410000000000000000000000000000000000000000000000000000000000000004009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f13000000000000000000000000e9441b34f71659cca2bfe90d98ee0e57d9cad28f0000000000000000000000000000000000000000000000000000000000000004009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f130000000000000000000000005e7a86178252aeae9cbda30f9c342c71799a3ee10000000000000000000000000000000000000000000000000000000000000004009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f13000000000000000000000000701da7a0c8ee46521955cc29d32943d47e2c02b90000000000000000000000000000000000000000000000000000000000000004009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f13000000000000000000000000044671acf58340ac9d7ab782d3f93d1943fe24bf0000000000000000000000000000000000000000000000000000000000000004009711730060c73ee7fcfe1890e8a0993858a7d225000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000440d582f13000000000000000000000000b307f0b2eddb84ef63f3f9dc99a3a1a66d68eb3a00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000"
+      },
+      note:"Deploying replays this Safe's original mainnet creation, so it lands at the same address with the "
+         + "owner set it was <b>created</b> with, 1 of 2, not today's 4 of 9. The row then offers the rest as "
+         + "one batched transaction, sendable by either of those two owners while the threshold is still 1. "
+         + "One of the owners it adds is a nested Safe held by Cantina: <b>ping Cantina to have them set up "
+         + "their nested Safe on this chain</b>, or that owner cannot sign afterwards." },
+    { key:"opsAdmin", address:"0xd21413291444C5c104F1b5918cA0D2f6EC91Ad16",
+      want:"2/7", calldata:"0x1688f0b900000000000000000000000041675c099f32341bf84bfc5382af534df5c7461a000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000264b63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000bd89a1ce4dde368ffab0ec35506eece0b1ffdc540000000000000000000000000000000000000000000000000000000000000200000000000000000000000000fd0732dc9e303f09fcef3a7388ad10a83459ec99000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005afe7a11e70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007000000000000000000000000d55114bfe98a2ca16202aa741bee571765292616000000000000000000000000080001dbe12fa46a1d7c03fa0cbf1839e367f1550000000000000000000000009edec77dd2651ce062ab17e941347018ad4eaea9000000000000000000000000e9441b34f71659cca2bfe90d98ee0e57d9cad28f0000000000000000000000005e7a86178252aeae9cbda30f9c342c71799a3ee1000000000000000000000000701da7a0c8ee46521955cc29d32943d47e2c02b9000000000000000000000000044671acf58340ac9d7ab782d3f93d1943fe24bf0000000000000000000000000000000000000000000000000000000000000024fe51f64300000000000000000000000029fcb43b46531bca003ddc8fcb67ffe91900c7620000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      note:"Replaying the original creation reproduces this Safe at its current 2 of 7 directly." }
+  ]
+};
+const CHAINS = [[1, "Ethereum", "https://etherscan.io"], [10, "Optimism", "https://optimistic.etherscan.io"], [50, "XDC", "https://xdcscan.com"], [56, "BNB Smart Chain", "https://bscscan.com"], [100, "Gnosis", "https://gnosisscan.io"], [122, "Fuse", "https://explorer.fuse.io"], [130, "Unichain", "https://uniscan.xyz"], [137, "Polygon", "https://polygonscan.com"], [143, "Monad", "https://monadscan.com"], [146, "Sonic", "https://sonicscan.org"], [177, "Hashkey", "https://hsk.blockscout.com"], [196, "X Layer", "https://www.oklink.com/xlayer"], [204, "opBNB", "https://opbnb.bscscan.com"], [252, "Fraxtal", "https://fraxscan.com"], [480, "WorldChain", "https://worldscan.org"], [988, "Stable", "https://stablescan.xyz"], [999, "HyperEVM", "https://hyperevmscan.io"], [1135, "Lisk", "https://blockscout.lisk.com"], [1514, "Story", "https://datanetscan.io"], [1625, "Gravity", "https://explorer.gravity.xyz"], [1672, "Pharos", "https://www.pharosscan.xyz"], [1750, "Metal", "https://explorer.metall2.com"], [1776, "Injective", "https://blockscout.injective.network"], [2222, "Kava", "https://kavascan.com"], [2345, "GOAT", "https://explorer.goat.network"], [2818, "Morph", "https://explorer.morphl2.io"], [3338, "Peaq", "https://peaq.subscan.io"], [4326, "MegaETH", "https://mega.etherscan.io"], [4663, "Robinhood", "https://robinscan.io"], [5330, "Superseed", "https://explorer.superseed.xyz"], [8217, "Kaia", "https://kaiascope.com"], [8453, "Base", "https://basescan.org"], [9745, "Plasma", "https://plasmascan.to"], [13371, "Immutable zkEVM", "https://explorer.immutable.com"], [16661, "0G", "https://chainscan.0g.ai"], [33139, "ApeChain", "https://apescan.io"], [34443, "Mode", "https://explorer.mode.network"], [42161, "Arbitrum One", "https://arbiscan.io"], [42170, "Arbitrum Nova", "https://nova-explorer.arbitrum.io"], [42220, "Celo", "https://celoscan.io"], [42793, "Etherlink", "https://explorer.etherlink.com"], [43111, "Hemi", "https://explorer.hemi.xyz"], [43114, "Avalanche C-Chain", "https://snowtrace.io"], [59144, "Linea", "https://lineascan.build"], [60808, "BOB", "https://explorer.gobob.xyz"], [80094, "Berachain", "https://berascan.com"], [81457, "Blast", "https://blastscan.io"], [98866, "Plume", "https://explorer.plume.org"], [747474, "Katana", "https://katanascan.com"], [1440000, "XRPL EVM", "https://explorer.xrplevm.org"], [5734951, "Jovay", "https://explorer.jovay.io/l2"], [7777777, "Zora", "https://explorer.zora.energy"]];
+
+// ---- JSON-RPC and ABI, by hand: the page loads nothing ----------------------------------------
+const SEL = { namespaces:"0x9f5e88db", isDelegate:"0x5fec5d0b", setDelay:"0xc1073302",
+              setDelegate:"0x4a994eef", getThreshold:"0xe75235b8", getOwners:"0xa0e67e2b",
+              deployCreate2:"0x26307668",
+              execTransaction:"0x6a761202", addOwnerWithThreshold:"0x0d582f13",
+              changeThreshold:"0x694e80c3", multiSend:"0x8d80ff0a" };
+// MultiSendCallOnly 1.4.1: delegatecalled by the Safe so the batch runs as the Safe itself, and it can
+// only make plain calls, which is all an owner change needs
+const MULTISEND = "0x9641d764fc13c8B624c04430C7356C1C7C8102e2";
+const strip = h => (h || "").replace(/^0x/, "");
+const word  = h => strip(h).toLowerCase().padStart(64, "0");
+const num   = n => word(BigInt(n).toString(16));
+const chunk = (h, i) => strip(h).slice(i * 64, i * 64 + 64);
+
+async function rpc(url, method, params, ms = 20000) {
+  const r = await fetch(url, { method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }), signal: AbortSignal.timeout(ms) });
+  const j = await r.json();
+  if (j.error) throw new Error(j.error.message || "rpc error");
+  return j.result;
+}
+const getCode = (url, a) => rpc(url, "eth_getCode", [a, "latest"]);
+const ethCall = (url, to, data) => rpc(url, "eth_call", [{ to, data }, "latest"]);
+
+// bytes32 salt + dynamic bytes, the one call needing an offset
+function encodeDeployCreate2(salt, initcode) {
+  const b = strip(initcode);
+  const padded = b + "0".repeat((64 - b.length % 64) % 64);
+  return SEL.deployCreate2 + word(salt) + num(64) + num(b.length / 2) + padded;
+}
+
+// Endpoints, registries and chain lists are strangers: their strings reach innerHTML, and this page has a
+// wallet attached, so anything interpolated from them is escaped first
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// A Safe at threshold 1 can be driven straight from an owner's wallet: Safe accepts a "pre-validated"
+// signature, r = the owner, s = 0, v = 1, meaning "the caller is this owner and approves". No off-chain
+// signing and no Safe service. Above threshold 1 it takes real signatures and belongs in the Safe app.
+function encodeExec(safe, to, inner, owner, operation = 0) {
+  const padTo32 = b => { const x = strip(b); return x + "0".repeat((64 - x.length % 64) % 64); };
+  const sig = word(owner) + num(0) + "01";
+  const dataOff = 10 * 32;
+  const sigOff = dataOff + 32 + padTo32(inner).length / 2;
+  return SEL.execTransaction
+    + word(to) + num(0) + num(dataOff) + num(operation) + num(0) + num(0) + num(0)
+    + word("0x0") + word("0x0") + num(sigOff)
+    + num(strip(inner).length / 2) + padTo32(inner)
+    + num(strip(sig).length / 2) + padTo32(sig);
+}
+// MultiSend's packed format: operation, target, value, length, data — repeated, no padding between
+function encodeMultiSend(calls) {
+  const padTo32 = b => { const x = strip(b); return x + "0".repeat((64 - x.length % 64) % 64); };
+  const packed = calls.map(([to, data]) =>
+    "00" + strip(to).toLowerCase() + num(0) + num(strip(data).length / 2) + strip(data)).join("");
+  return SEL.multiSend + num(32) + num(packed.length / 2) + padTo32(packed);
+}
+
+// What this Safe still needs to match Ethereum, one transaction at a time. Owners go on while the
+// threshold is still 1 and the threshold is raised last, or the page locks itself out half way through.
+// The dialog shows `adds`, the wallet signs `data`. Nothing would tie those together if the payload were
+// not decoded here: edit one without the other and the page would display one owner set and sign another.
+function decodeReconcile(safe, data) {
+  const hex = strip(data);
+  if (!hex.startsWith(strip(SEL.multiSend))) return null;
+  const len = parseInt(hex.slice(8 + 64, 8 + 128), 16);
+  const packed = hex.slice(8 + 128, 8 + 128 + len * 2);
+  const adds = [];
+  let at = 0, threshold = null;
+  while (at < packed.length) {
+    const op = packed.slice(at, at + 2); at += 2;
+    const to = "0x" + packed.slice(at, at + 40); at += 40;
+    const value = BigInt("0x" + packed.slice(at, at + 64)); at += 64;
+    const dl = parseInt(packed.slice(at, at + 64), 16); at += 64;
+    const d = packed.slice(at, at + dl * 2); at += dl * 2;
+    // Every call: a plain call, to the Safe, no value, adding one owner
+    if (op !== "00" || to.toLowerCase() !== safe.toLowerCase() || value !== 0n) return null;
+    if ("0x" + d.slice(0, 8) !== SEL.addOwnerWithThreshold) return null;
+    adds.push("0x" + d.slice(8 + 24, 8 + 64));
+    threshold = Number("0x" + d.slice(8 + 64, 8 + 128));
+  }
+  return at === packed.length && adds.length ? { adds, threshold, calls: adds.length } : null;
+}
+
+function safeStep(i) {
+  const st = state.checks?.safes?.[i], ref = (state.checks?.eth || [])[i], plan = CFG.safes[i].reconcile;
+  if (!st || st.deployed !== true || !plan || state.chainId === 1) return null;
+  if (ref && st.config === ref.config && sameOwners(st.owners, ref.owners)) return null;
+  const here = (st.owners || []).map(o => o.toLowerCase());
+  const from = plan.fromOwners.map(o => o.toLowerCase());
+  // The constant fits the state a replay produces and nothing else. Anything in between is a
+  // half-finished or hand-edited Safe, and inventing a repair for that is what must not happen here.
+  const atStart = st.threshold === plan.fromThreshold
+    && here.length === from.length && from.every(o => here.includes(o));
+  if (!atStart) return { blocked: "the owner set is neither the one a replay produces nor Ethereum's,"
+    + " so the built-in reconciliation does not apply" };
+  // And it has to still describe Ethereum, or this page is the thing that is out of date
+  if (ref) {
+    const target = [...plan.fromOwners, ...plan.adds].map(o => o.toLowerCase());
+    const refOwners = (ref.owners || []).map(o => o.toLowerCase());
+    const agrees = ref.threshold === plan.threshold && target.length === refOwners.length
+      && target.every(o => refOwners.includes(o));
+    if (!agrees) return { blocked: "the built-in reconciliation no longer matches Ethereum: this page is out of date" };
+  }
+  // What the bytes actually do, read out of the bytes themselves
+  const decoded = decodeReconcile(CFG.safes[i].address, plan.data);
+  if (!decoded) return { blocked: "the built-in calldata is not a plain batch of owner additions to this Safe" };
+  const described = decoded.calls === plan.calls && decoded.threshold === plan.threshold
+    && decoded.adds.length === plan.adds.length
+    && decoded.adds.every((o, k) => o.toLowerCase() === plan.adds[k].toLowerCase());
+  if (!described) return { blocked: "the built-in calldata does not match the owners this page lists" };
+  return { adds: decoded.adds, threshold: decoded.threshold, data: plan.data, calls: decoded.calls };
+}
+
+function safeStepReason(i) {
+  const st = state.checks?.safes?.[i], step = safeStep(i);
+  if (!step) return null;
+  if (step.blocked) return step.blocked;
+  const code = state.checks?.infraCode || {};
+  if (code.MultiSendCallOnly !== "ok")
+    return code.MultiSendCallOnly === "foreign"
+      ? "the code at MultiSendCallOnly is not Safe's, so it must not be delegatecalled"
+      : "MultiSendCallOnly is not verified on this chain";
+  if (!state.checks?.ethRef?.agreed)
+    return state.checks?.ethRef?.conflict
+      ? "two Ethereum endpoints disagree on the owner set"
+      : "the owner set is confirmed by only one Ethereum endpoint";
+  if (!state.account) return "connect an owner to send it";
+  if (!(st.owners || []).some(o => o.toLowerCase() === state.account.toLowerCase()))
+    return "the connected account is not an owner of this Safe";
+  if (st.threshold !== 1) return `threshold is ${st.threshold}, so this needs signatures: use the Safe app`;
+  return null;
+}
+
+const $ = s => document.querySelector(s);
+const el = { network:$("#network"), rpc:$("#rpc"), rpcPick:$("#rpcPick"), rpcPickLabel:$("#rpcPickLabel"),
+             explorer:$("#explorer"),
+             customName:$("#customName"), customNameLabel:$("#customNameLabel"),
+             log:$("#log") };
+let state = { chainId:null, rpcUrl:null, checks:null, account:null, walletChain:null };
+// A remembered endpoint waiting for the initial network change to pick it up
+let restoreRpc = null;
+let rpcIndex = null, chainMeta = {}, probeToken = 0, checkToken = 0, checkTimer = null;
+// Every path that changes the endpoint ends here, so a stale run is discarded rather than racing the new one
+// ---- remembered selection --------------------------------------------------------------------
+// The chain and the endpoint it settled on, so a reload comes back where it was instead of
+// re-probing the public list. Wrapped because storage throws outright in some contexts.
+const MEM = "centrifuge-deployer:namespace-setup";
+// { network, customName, rpcs: { <network value>: url } }. Per chain, because an endpoint pasted for one
+// chain is worthless on another, and the pasted ones are exactly what is worth not losing.
+// Wrapped because localStorage throws outright in some contexts (a private window, blocked site data).
+// It is scoped to the origin, so this file wants an origin of its own: on a host that also serves other
+// people's files, everything saved here is readable by them.
+const memStore = {
+  get: () => { try { return localStorage.getItem(MEM); } catch { return null; } },
+  set: v => { try { localStorage.setItem(MEM, v); } catch {} },
+};
+
+function stored() {
+  try { return JSON.parse(memStore.get() || "null") || {}; } catch { return {}; }
+}
+// `chosen` says the endpoint is the reader's own, typed or picked. An endpoint the probe happened to
+// land on is not remembered: it would be restored ahead of any probe on the next load, and public
+// endpoints rot, so a dead one would pin itself in place of the eleven others already known.
+function remember(chosen = true) {
+  try {
+    const mem = stored();
+    mem.network = el.network.value;
+    mem.customName = el.customName.value;
+    mem.rpcs = mem.rpcs || {};
+    const url = el.rpc.value.trim();
+    if (url && chosen) mem.rpcs[el.network.value] = url;
+    else if (!url) delete mem.rpcs[el.network.value];
+    mem.explorers = mem.explorers || {};
+    const ex = el.explorer.value.trim();
+    if (ex) mem.explorers[el.network.value] = ex; else delete mem.explorers[el.network.value];
+    memStore.set(JSON.stringify(mem));
+  } catch {}
+}
+const recall = () => stored();
+const rememberedRpc = network => (stored().rpcs || {})[network] || null;
+const rememberedExplorer = network => (stored().explorers || {})[network] || null;
+
+// A chain with no gate is only in the picker once chainlist.org has been read, and that is the whole
+// point of this page, so a remembered one waits here for the full list rather than being dropped
+let pendingRestore = null;
+let defaultNetwork = null;
+function applySaved(s) {
+  if (!s || !s.network || ![...el.network.options].some(o => o.value === s.network)) return false;
+  el.network.value = s.network;
+  el.customName.value = s.customName || "";
+  el.explorer.value = rememberedExplorer(s.network) || "";
+  restoreRpc = rememberedRpc(s.network);
+  return true;
+}
+
+function scheduleCheck(ms = 350) {
+  clearTimeout(checkTimer);
+  checkTimer = setTimeout(() => { if (el.rpc.value.trim()) runChecks(); }, ms);
+}
+
+const log = m => { el.log.textContent = new Date().toLocaleTimeString() + "  " + m + "\n" + el.log.textContent; };
+const MARK = { ok: "✓", warn: "✕", bad: "✕", dim: "·" };
+// `link` is an explorer address, or a key into POPUPS; a status only becomes clickable once it is green,
+// since that is when there is something on chain worth looking at
+function setRow(k, text, cls, link) {
+  const host = document.querySelector(`[data-k="${k}"]`);
+  if (!host) return;
+  const old = host.querySelector(".st");
+  const mark = (MARK[cls || "dim"] || "·") + " " + text;
+  // A popup is worth opening whatever the status says, and most so when something is off; an explorer
+  // link only makes sense once there is something at the address
+  const isPop = !!(link && link.pop);
+  const url = isPop || cls !== "ok" ? null
+            : link && link.addr ? explorerUrl(link.addr)
+            : (link && link.href) || null;
+  const node = document.createElement(url || isPop ? "a" : "span");
+  node.className = "st " + (cls || "dim");
+  node.textContent = mark;
+  if (url) { node.href = url; node.target = "_blank"; node.rel = "noopener"; }
+  else if (isPop) { node.href = "#"; node.dataset.pop = link.pop; }
+  old.replaceWith(node);
+}
+function explorerBase() {
+  const own = el.explorer.value.trim();
+  if (own) return own;
+  const row = CHAINS.find(c => c[0] === state.chainId);
+  return (row && row[2]) || chainMeta[state.chainId]?.explorer || null;
+}
+const shortName = () => chainMeta[state.chainId]?.shortName || "eth";
+// Escaping covers markup, not schemes: encodeURI leaves "javascript:" intact, and a chainlist entry or a
+// pasted field reaching an href would run in this page's origin, wallet and all
+const httpOnly = u => /^https?:\/\//i.test(String(u || "")) ? String(u) : null;
+function explorerUrl(addr) {
+  const b = httpOnly(explorerBase());
+  return b ? b.replace(/\/$/, "") + "/address/" + addr : null;
+}
+// A button is there when there is something to press it for; disabled means needed but not yet possible
+function act(name, needed, possible) {
+  const b = document.querySelector(`[data-act="${name}"]`);
+  if (!b) return;
+  b.classList.toggle("hide", !needed);
+  b.disabled = !possible;
+}
+function resetRows() {
+  document.querySelectorAll('[data-k^="gas"]').forEach(r => r.classList.add("hide"));
+  // The anchor setRow built survives this, so drop what makes it clickable: its popup has no data now
+  document.querySelectorAll(".row a.st[data-pop]").forEach(a => a.removeAttribute("data-pop"));
+  document.querySelectorAll(".row .st").forEach(s => { s.textContent = "· unchecked"; s.className = "st dim"; });
+  renderNsSigner(false);
+  document.querySelectorAll("button[data-act]").forEach(b => { b.classList.add("hide"); b.disabled = true; });
+}
+
+// ---- network picker ---------------------------------------------------------------------------
+const opt = (value, textContent) => Object.assign(document.createElement("option"), { value, textContent });
+// The gate's own 52 first, so the page is usable before chainlist.org's 2MB arrives; every other chain
+// is added underneath as soon as it does, since a chain without a gate is exactly what this page sets up
+function populateChains(all) {
+  const keep = el.network.value;
+  el.network.innerHTML = "";
+  const known = new Set(CHAINS.map(c => c[0]));
+  const g1 = document.createElement("optgroup");
+  g1.label = `Gate deployed (${CHAINS.length})`;
+  for (const [id, name] of CHAINS) g1.append(opt(String(id), `${name} (${id})`));
+  el.network.append(g1);
+  if (all) {
+    const rest = all.filter(c => !known.has(c.chainId) && c.name)
+                    .sort((a, b) => a.name.localeCompare(b.name));
+    const g2 = document.createElement("optgroup");
+    g2.label = `Every other chain (${rest.length})`;
+    for (const c of rest) g2.append(opt(String(c.chainId), `${c.name} (${c.chainId})`));
+    el.network.append(g2);
+  }
+  el.network.append(opt("custom", "Custom network…"));
+  if (keep) el.network.value = keep;
+  defaultNetwork ??= el.network.value;
+  // Only while the reader has not picked something themselves in the meantime
+  if (pendingRestore && el.network.value === defaultNetwork) {
+    const s = pendingRestore;
+    pendingRestore = null;
+    if (applySaved(s)) el.network.dispatchEvent(new Event("change"));
+  }
+}
+populateChains(null);
+
+// Memoised on the promise, not on the object it fills: two callers racing the same download must both
+// wait for it, or the second one reads an index that is still empty
+let rpcIndexPromise = null;
+function loadRpcIndex() {
+  if (rpcIndexPromise) return rpcIndexPromise;
+  rpcIndexPromise = (async () => {
+    const index = {};
+    let populated = false;
+    try {
+      // chainlist.org's list: rpc entries are objects, and the ones that track nothing come first
+      const list = await (await fetch("https://chainlist.org/rpcs.json")).json();
+      for (const c of list) {
+        const urls = (c.rpc || [])
+          .map(r => typeof r === "string" ? { url: r } : r)
+          .filter(r => r.url && r.url.startsWith("https://") && !r.url.includes("${") && !r.url.includes("API_KEY"))
+          .sort((a, b) => (a.tracking === "none" ? 0 : 1) - (b.tracking === "none" ? 0 : 1))
+          .map(r => r.url);
+        if (urls.length) index[c.chainId] = urls.slice(0, 12);
+        chainMeta[c.chainId] = { shortName: c.shortName, explorer: (c.explorers || [])[0]?.url,
+                                 explorers: c.explorers || [],
+                                 name: c.name, symbol: c.nativeCurrency?.symbol || "ETH",
+                                 currencyName: c.nativeCurrency?.name };
+      }
+      populated = true;
+      try { populateChains(list); } catch (e) { log("chain picker: " + e.message); }
+    } catch (e) { log("chainlist.org unavailable: " + e.message + " — the gate's own 52 chains still work"); }
+    rpcIndex = index;
+    // Nothing was learned, so let the next chain pick try the download again
+    if (!populated) rpcIndexPromise = null;
+    return index;
+  })();
+  return rpcIndexPromise;
+}
+
+// An endpoint that answers eth_chainId and nothing else is common enough to be the default case:
+// cloudflare-eth.com does exactly that. So the probe reads state as well, and only an endpoint that
+// survives both is offered.
+async function probeOne(url, chainId) {
+  const id = Number(await rpc(url, "eth_chainId", [], 6000));
+  if (id !== chainId) throw new Error("answers for " + id);
+  const code = await rpc(url, "eth_getCode", [CFG.createx, "latest"], 8000);
+  if (typeof code !== "string") throw new Error("no eth_getCode");
+  return url;
+}
+
+// Public endpoints rot, and the first one listed is as likely to be dead as any other. Probe them all
+// at once and take the first that answers for the right chain; the rest stay in the picker, labelled.
+async function probeCandidates(chainId, urls, keep) {
+  const token = ++probeToken;
+  el.rpcPick.innerHTML = "";
+  const opts = urls.map(u => {
+    const o = Object.assign(document.createElement("option"), { value: u, textContent: "· " + u });
+    el.rpcPick.append(o); return o;
+  });
+  // A remembered endpoint is already the choice: probe only to label the alternatives beside it
+  let chosen = !!keep;
+  if (keep) {
+    el.rpc.value = keep;
+    if (urls.includes(keep)) el.rpcPick.value = keep;
+    scheduleCheck(0);
+  }
+  await Promise.allSettled(urls.map((u, i) =>
+    probeOne(u, chainId).then(() => {
+      if (token !== probeToken) return;
+      opts[i].textContent = "✓ " + u;
+      // Start on the first endpoint that answers rather than waiting out every timeout
+      if (!chosen) { chosen = true; el.rpc.value = u; el.rpcPick.value = u; log("using " + u); remember(false); scheduleCheck(0); }
+    }, e => {
+      if (token !== probeToken) return;
+      opts[i].textContent = "✕ " + u + "  " + (e.name === "TimeoutError" ? "timeout" : e.message);
+    })));
+  if (token !== probeToken) return;
+  if (chosen) return;
+  el.rpcPick.prepend(Object.assign(document.createElement("option"),
+    { value: "", textContent: "none answered — paste one below" }));
+  el.rpcPick.value = "";
+  // The reader got there first and pasted one: the public list failing says nothing about that endpoint,
+  // and clearing the rows here would throw away a check that has already run against it
+  if (el.rpc.value.trim()) return log(`none of the ${urls.length} public endpoints for chain ${chainId} answered`);
+  busyRows(false);
+  resetRows();
+  showErr(`None of the ${urls.length} known endpoints for chain ${chainId} answered. Paste one below.`);
+}
+
+el.rpcPick.addEventListener("change", () => {
+  if (el.rpcPick.value) { el.rpc.value = el.rpcPick.value; remember(); scheduleCheck(0); }
+});
+// Typing an endpoint makes it the choice, so an in-flight probe stops picking one
+el.rpc.addEventListener("input", () => { probeToken++; remember(); scheduleCheck(700); });
+el.rpc.addEventListener("change", () => { probeToken++; remember(); scheduleCheck(0); });
+el.explorer.addEventListener("input", () => { remember(); scheduleCheck(700); });
+el.explorer.addEventListener("change", () => { remember(); scheduleCheck(0); });
+el.customName.addEventListener("input", remember);
+el.network.addEventListener("change", async () => {
+  const custom = el.network.value === "custom";
+  el.customName.classList.toggle("hide", !custom);
+  el.customNameLabel.classList.toggle("hide", !custom);
+  el.rpcPick.classList.toggle("hide", custom);
+  el.rpcPickLabel.classList.toggle("hide", custom);
+  el.rpc.value = ""; state.checks = null; state.chainId = null;
+  showErr(null); resetRows(); probeToken++;
+  // The one-shot restore wins on the very first change; after that the per-chain memory answers
+  const keep = restoreRpc || rememberedRpc(el.network.value);
+  restoreRpc = null;
+  // Put it back in the field before remembering: the field was just cleared, and remembering an empty
+  // one would drop the entry for the chain being switched to
+  if (keep) el.rpc.value = keep;
+  el.explorer.value = rememberedExplorer(el.network.value) || "";
+  remember();
+  if (custom) {
+    if (keep) { el.rpc.value = keep; busyRows(true, "checking"); scheduleCheck(0); }
+    else busyRows(false);
+    return;
+  }
+  busyRows(true, keep ? "checking" : "finding endpoint");
+  const chainId = Number(el.network.value);
+  const urls = (await loadRpcIndex())[chainId];
+  if (!urls) {
+    el.rpcPick.innerHTML = `<option value=''>${rpcIndex && Object.keys(rpcIndex).length
+      ? "no public endpoint known" : "chain list unavailable"} — paste one below</option>`;
+    if (keep) { el.rpc.value = keep; scheduleCheck(0); return; }
+    busyRows(false); resetRows();
+    return showErr(rpcIndex && Object.keys(rpcIndex).length
+      ? `No public endpoint is known for chain ${chainId}. Paste one below.`
+      : "chainlist.org could not be reached, so no endpoints are known. Paste one below; everything else "
+        + "on the page works from it.");
+  }
+  await probeCandidates(chainId, urls, keep);
+});
+
+// ---- wallet -----------------------------------------------------------------------------------
+// Wallets announce themselves over EIP-6963; window.ethereum is the fallback for those that still
+// only inject. Announcements arrive whenever asked for, so collect them from load onwards.
+const wallets = new Map();
+addEventListener("eip6963:announceProvider", e => wallets.set(e.detail.info.uuid, e.detail));
+dispatchEvent(new Event("eip6963:requestProvider"));
+
+function walletProvider() {
+  const first = wallets.values().next().value;
+  return (first && first.provider) || window.ethereum || null;
+}
+// No injection at all is nearly always the page being on file://, where extensions do not inject
+// unless the user has turned file access on for them. Say that rather than "no wallet".
+function noWalletReason() {
+  return location.protocol === "file:"
+    ? 'No wallet injects into a <span class="mono">file://</span> page. Serve this directory over HTTP and'
+      + ' open it from there: <span class="mono">./script/deploy/namespace-setup.sh</span>'
+    : "No wallet found. Install one, or unlock it and reload.";
+}
+async function connectWallet() {
+  const p = walletProvider();
+  if (!p) { showErr(noWalletReason()); return log("no wallet available"); }
+  showErr(null);
+  try { [state.account] = await p.request({ method: "eth_requestAccounts" }); }
+  catch (e) { return log("wallet: " + (e.message || e)); }
+  // Several buttons reach this, and every call would otherwise leave another pair of listeners behind
+  if (!connectWallet.bound) {
+    connectWallet.bound = true;
+    p.on("accountsChanged", a => { state.account = a[0]; refreshWallet(); });
+    p.on("chainChanged", refreshWallet);
+  }
+  refreshWallet();
+}
+$("#connect").addEventListener("click", connectWallet);
+async function refreshWallet() {
+  // The button already says "Connect wallet", so show the account only once there is one
+  $("#wallet").textContent = state.account || "";
+  $("#connect").classList.toggle("hide", !!state.account);
+  const p = walletProvider();
+  // Repaint first: buttons drawn while connected must not stay live after the account goes away
+  if (!p || !state.account) { state.walletChain = null; render(); showWalletBalance(); return; }
+  try { state.walletChain = Number(await p.request({ method: "eth_chainId" })); }
+  catch (e) { state.walletChain = null; log("wallet: " + (e.message || e)); }
+  render();
+  showWalletBalance();
+}
+// 4902 is the documented code for "the wallet does not know this chain", but wallets disagree: MetaMask
+// wraps it in -32603 in some versions, others only say so in the message. Miss it and the add never
+// happens, which reads as the action silently failing.
+function isUnknownChain(e) {
+  // every code the error carries, not just the outermost: a wallet can wrap 4902 inside -32000
+  const codes = [e?.code, e?.data?.originalError?.code, e?.data?.code, e?.cause?.code];
+  if (codes.some(c => c === 4902)) return true;
+  // -32603 is MetaMask's generic internal error, so on its own it means nothing: the message has to agree,
+  // or a transient switch failure would have us rewrite the reader's chain entry with a probed endpoint
+  const says = /unrecognized chain|unknown chain|chain .*not (been )?added|wallet_addethereumchain|add(ing)? the chain/i
+    .test(String(e?.message || ""));
+  return says;
+}
+
+// What the connected account holds on the chain being set up, which is the number that decides whether
+// the next action can be paid for
+async function showWalletBalance() {
+  const w = $("#walletChain");
+  if (!state.account || !state.rpcUrl || !state.chainId) { w.textContent = ""; return; }
+  const sym = chainMeta[state.chainId]?.symbol || "ETH";
+  if (state.checks?.noNativeBalance) { w.textContent = "no native currency"; w.className = "st dim"; return; }
+  try {
+    const bal = await rpc(state.rpcUrl, "eth_getBalance", [state.account, "latest"]);
+    w.textContent = `${fmtEth(bal)} ${sym}`;
+    w.className = "st " + (BigInt(bal) === 0n ? "warn" : "dim");
+  } catch { w.textContent = ""; }
+}
+
+async function ensureWalletChain() {
+  const p = walletProvider();
+  const want = "0x" + state.chainId.toString(16);
+  if (state.walletChain === state.chainId) return;
+  try {
+    await p.request({ method: "wallet_switchEthereumChain", params: [{ chainId: want }] });
+  } catch (e) {
+    if (!isUnknownChain(e)) throw e;
+    const name = el.network.value === "custom"
+      ? (el.customName.value || "Chain " + state.chainId)
+      : (CHAINS.find(c => c[0] === state.chainId)?.[1] || chainMeta[state.chainId]?.name || "Chain " + state.chainId);
+    const explorer = (state.checks?.explorer?.etherscan?.url) || (state.checks?.explorer?.listed?.url);
+    log("adding chain " + state.chainId + " to the wallet");
+    await p.request({ method: "wallet_addEthereumChain", params: [{
+      chainId: want, chainName: name, rpcUrls: [state.rpcUrl],
+      nativeCurrency: { name: chainMeta[state.chainId]?.currencyName || chainMeta[state.chainId]?.symbol || "Ether",
+                        symbol: chainMeta[state.chainId]?.symbol || "ETH", decimals: 18 },
+      ...(explorer ? { blockExplorerUrls: [explorer.replace(/\/$/, "")] } : {}) }] });
+    // Adding usually switches too, but not in every wallet
+    try { await p.request({ method: "wallet_switchEthereumChain", params: [{ chainId: want }] }); }
+    catch { /* already there, or the wallet asks the reader instead */ }
+  }
+  state.walletChain = Number(await p.request({ method: "eth_chainId" }));
+  if (state.walletChain !== state.chainId)
+    throw new Error(`wallet is on chain ${state.walletChain}, switch it to ${state.chainId}`);
+}
+
+async function send(label, to, data, value) {
+  try {
+    if (!state.account) throw new Error("connect a wallet first");
+    await ensureWalletChain();
+    log(label + ": simulating…");
+    const tx = { from: state.account, to };
+    if (data) tx.data = data;
+    if (value) tx.value = "0x" + BigInt(value).toString(16);
+    // Run it against the endpoint first. Everything here is a one-shot, irreversible action, and a
+    // revert seen now costs nothing while the same revert after signing costs the gas and the confusion.
+    if (data) {
+      try { await rpc(state.rpcUrl, "eth_call", [tx, "latest"]); }
+      catch (e) { throw new Error("simulation failed, nothing sent: " + (e.message || e)); }
+      log(label + ": simulation passed, sending…");
+    }
+    const hash = await walletProvider().request({ method: "eth_sendTransaction", params: [tx] });
+    log(label + ": " + hash);
+    for (let i = 0; i < 120; i++) {
+      const r = await rpc(state.rpcUrl, "eth_getTransactionReceipt", [hash]).catch(() => null);
+      if (r) { log(label + ": " + (Number(r.status) === 1 ? "mined" : "REVERTED")); break; }
+      await new Promise(s => setTimeout(s, 2000));
+    }
+    await runChecks();
+  } catch (e) {
+    log(label + ": FAILED " + (e.message || e));
+    showErr(`${esc(label)} failed: <span class="mono">${esc(e.message || e)}</span>`);
+  }
+}
+
+// ---- checks -----------------------------------------------------------------------------------
+// Plain decimal, never exponent notation: these are amounts someone is about to type into a wallet.
+// At most eight decimals, but a very small number keeps digits until its first significant one shows.
+function fmtEth(wei) {
+  if (wei === null || wei === undefined) return "?";
+  const v = BigInt(wei);
+  if (v === 0n) return "0";
+  const whole = (v / 10n ** 18n).toString();
+  let frac = (v % 10n ** 18n).toString().padStart(18, "0").replace(/0+$/, "");
+  const firstSig = frac.search(/[1-9]/);
+  frac = frac.slice(0, Math.max(8, firstSig + 2)).replace(/0+$/, "");
+  return frac ? `${whole}.${frac}` : whole;
+}
+
+// ---- chain compatibility: the deployment checklist, as far as a chain can answer it ----------
+// Creation-code probes sent through eth_call with no `to`, so nothing is deployed to find out. The
+// control uses no opcode past Frontier: when it fails, the endpoint refuses code-only calls and the
+// rest say nothing about the chain.
+// Two addresses with no key behind them and nothing ever sent to them. A chain with no native currency
+// charges gas in a token, rejects value transfers, and answers eth_getBalance with the same made-up
+// number for every address: equal and non-zero here means no balance read on this page means anything.
+const EMPTY_PROBES = ["0x00dead0000000000000000000000000000000001",
+                      "0x00dead0000000000000000000000000000000002"];
+const PROBES = {
+  "control": "600160005260206000f3",
+  "PUSH0": "60015f5260205ff3",
+  "MCOPY": "6020600060205e600160005260206000f3",
+  "TSTORE / TLOAD": "600160005d60005c60005260206000f3",
+  "BLOBBASEFEE": "4a60005260206000f3"
+};
+// The DVNs a LayerZero deployment needs live, and the three that are welcome but not required
+const DVNS = [
+  ["Deutsche Telekom", true], ["Canary", true],
+  ["Nansen", false], ["P2P", false], ["Nethermind", false]
+];
+
+const memos = {};
+// Memoised on success only: a registry that was down once should be asked again on the next check,
+// not written off for the life of the page
+function memoJson(key, url) {
+  return memos[key] ??= fetch(url).then(r => r.json()).catch(e => {
+    delete memos[key];
+    log(`${new URL(url).host}: ${e.message}`);
+    return null;
+  });
+}
+
+async function probeOpcodes(url) {
+  const out = {};
+  for (const [name, code] of Object.entries(PROBES)) {
+    try { await rpc(url, "eth_call", [{ data: "0x" + code }, "latest"], 8000); out[name] = true; }
+    catch { out[name] = false; }
+  }
+  return out;
+}
+
+// LayerZero's own metadata, the full document: the lighter /deployments and /dvns endpoints are missing
+// whole chains. One fetch carries the endpoint, the eid and the DVN roster, and it is memoised.
+const normDvn = n => (n || "").toLowerCase().replace(/[^a-z0-9]/g, "").replace(/labs$/, "");
+
+async function bridgeInfo(chainId) {
+  // Which registries answered at all, so "none found" is never confused with "none asked"
+  const out = { lz: null, ccip: null, hyperlane: null, dvns: null, asked: 0 };
+  const lz = await memoJson("lz", "https://metadata.layerzero-api.com/v1/metadata");
+  if (lz) {
+    out.asked++;
+    // chainType, because a non-EVM chain can carry the same nativeChainId: Aptos claims 1 alongside Ethereum
+    const e = Object.values(lz).find(x => x.chainDetails?.nativeChainId === chainId
+      && x.chainDetails?.chainType === "evm"
+      && (x.deployments || []).some(d => d.version === 2 && d.stage === "mainnet"));
+    const d = e && e.deployments.find(x => x.version === 2 && x.stage === "mainnet");
+    if (d) {
+      out.lz = { eid: d.eid, endpoint: (d.endpointV2 || d.endpoint || {}).address };
+      const names = Object.values(e.dvns || {}).filter(v => !v.deprecated).map(v => v.canonicalName);
+      if (names.length) out.dvns = DVNS.map(([n, req]) =>
+        [n, names.some(x => normDvn(x) === normDvn(n)), req]);
+    }
+  }
+  const cc = await memoJson("ccip", "https://docs.chain.link/api/ccip/v1/chains?environment=mainnet");
+  if (cc) out.asked++;
+  const ccMap = cc && (cc.data?.evm || cc.data);
+  const ce = ccMap && ccMap[String(chainId)];
+  if (ce && ce.router) out.ccip = { router: ce.router, selector: ce.selector };
+  const hl = await hyperlaneIndex();
+  if (hl) out.asked++;
+  if (hl && hl[chainId]) out.hyperlane = hl[chainId];
+  return out;
+}
+
+// The explorer has to verify contracts, not merely exist. Etherscan's v2 chainlist is the authority for
+// its own family; a Blockscout instance is asked directly, since its API is public and CORS-open.
+async function explorerInfo(chainId) {
+  // No chainMeta at all means the chain list never arrived, which is not the same as a chain with no explorer
+  const all = (chainMeta[chainId]?.explorers || [])
+    .map(e => typeof e === "string" ? { url: e, name: "" } : e)
+    .filter(e => e && e.url);
+  const own = el.explorer.value.trim();
+  if (own && !all.some(e => e.url === own)) all.unshift({ url: own, name: "set here" });
+  const out = { known: !!chainMeta[chainId] || !!own, own: own || null,
+                listed: all[0] || null, all, etherscan: null, blockscout: null };
+  const es = await memoJson("etherscan", "https://api.etherscan.io/v2/chainlist");
+  const hit = ((es && es.result) || []).find(r => String(r.chainid) === String(chainId) && r.status === 1);
+  if (hit) out.etherscan = { url: hit.blockexplorer, api: hit.apiurl };
+  const bs = out.all.find(e => /blockscout/i.test(e.name || e.url || ""));
+  if (bs && !out.etherscan) {
+    try {
+      const r = await fetch(bs.url.replace(/\/$/, "") + "/api?module=block&action=eth_block_number",
+                            { signal: AbortSignal.timeout(8000) });
+      const j = await r.json();
+      if (j && (j.result || j.jsonrpc)) out.blockscout = { url: bs.url };
+    } catch { /* unreachable or CORS-blocked: left unproven rather than claimed */ }
+  }
+  return out;
+}
+
+// Hyperlane publishes no aggregate JSON, only two YAML files at the root of its registry. Both are flat
+// enough to scan by line: a slug at column zero, then the one key we need under it.
+function scanYaml(text, keyRe) {
+  const out = {};
+  let slug = null;
+  for (const line of text.split("\n")) {
+    const top = line.match(/^([A-Za-z0-9_]+):\s*$/);
+    if (top) { slug = top[1]; continue; }
+    const m = slug && line.match(keyRe);
+    if (m) out[slug] ??= m[1];
+  }
+  return out;
+}
+let hyperlanePromise = null;
+function hyperlaneIndex() {
+  if (hyperlanePromise) return hyperlanePromise;
+  const base = "https://raw.githubusercontent.com/hyperlane-xyz/hyperlane-registry/main/chains/";
+  hyperlanePromise = (async () => {
+    try {
+      const [md, ad] = await Promise.all([
+        fetch(base + "metadata.yaml").then(r => r.text()),
+        fetch(base + "addresses.yaml").then(r => r.text())]);
+      const ids = scanYaml(md, /^\s+chainId:\s*(\d+)\s*$/);
+      const mbx = scanYaml(ad, /^\s+mailbox:\s*"?(0x[0-9a-fA-F]{40})"?\s*$/);
+      const byId = {};
+      for (const [slug, id] of Object.entries(ids))
+        if (mbx[slug]) byId[Number(id)] = { slug, mailbox: mbx[slug] };
+      return byId;
+    } catch (e) {
+      hyperlanePromise = null;
+      log("hyperlane registry: " + e.message);
+      return null;
+    }
+  })();
+  return hyperlanePromise;
+}
+
+let ethRefPromise = null;
+const sameOwners = (a, b) => a && b && a.length === b.length &&
+  a.every(x => b.some(y => y.toLowerCase() === x.toLowerCase()));
+
+async function readSafe(url, address) {
+  const t = Number("0x" + chunk(await ethCall(url, address, SEL.getThreshold), 0));
+  const raw = await ethCall(url, address, SEL.getOwners);
+  const n = Number("0x" + chunk(raw, 1));
+  const owners = Array.from({ length: n }, (_, k) => "0x" + chunk(raw, 2 + k).slice(24));
+  return { threshold: t, owners, config: `${t}/${owners.length}` };
+}
+
+// The Ethereum reading of both Safes, and of the Safe contracts themselves. Two endpoints have to agree
+// on the owner sets before this page will offer to write them anywhere: a single lying endpoint would
+// otherwise hand an attacker a seat on the Safe, and that is not recoverable.
+function ethRef() {
+  if (!ethRefPromise) ethRefPromise = (async () => {
+    const readings = [];
+    for (const url of CFG.ethRpcs) {
+      try {
+        const safes = [];
+        for (const s of CFG.safes) safes.push(await readSafe(url, s.address));
+        const nested = await readSafe(url, CFG.nested.address);
+        const code = {};
+        for (const [n, a] of Object.entries(CFG.safeInfra)) code[n] = await rpc(url, "eth_getCode", [a, "latest"]);
+        code.MultiSendCallOnly = await rpc(url, "eth_getCode", [MULTISEND, "latest"]);
+        readings.push({ url, safes, nested, code });
+        if (readings.length === 2) break;
+      } catch { /* try the next endpoint */ }
+    }
+    if (!readings.length) { log("could not read the Ethereum reference"); return null; }
+    if (readings.length === 1) {
+      log("only one Ethereum endpoint answered: owner changes stay disabled");
+      return { safes: readings[0].safes, nested: readings[0].nested, code: readings[0].code, agreed: false };
+    }
+    const [a, b] = readings;
+    const same = a.safes.every((s, i) => s.config === b.safes[i].config && sameOwners(s.owners, b.safes[i].owners))
+      && a.nested.config === b.nested.config && sameOwners(a.nested.owners, b.nested.owners)
+      && Object.keys(a.code).every(k => a.code[k] === b.code[k]);
+    if (!same) {
+      log(`Ethereum endpoints disagree (${a.url} vs ${b.url}): owner changes stay disabled`);
+      return { safes: a.safes, nested: a.nested, code: a.code, agreed: false, conflict: true };
+    }
+    log("Ethereum reference confirmed by two endpoints");
+    return { safes: a.safes, nested: a.nested, code: a.code, agreed: true };
+  })();
+  return ethRefPromise;
+}
+
+async function runChecks() {
+  const url = el.rpc.value.trim();
+  if (!url) return log("paste an RPC endpoint");
+  const token = ++checkToken;
+  const stale = () => token !== checkToken;
+  state.rpcUrl = url;
+  busyRows(true, "checking");
+  try { await checkWith(url, stale); }
+  catch (e) {
+    if (stale()) return;
+    busyRows(false);
+    showErr(`Check failed: <span class="mono">${esc(e.message || e)}</span>`);
+    log("check failed: " + (e.stack || e.message || e));
+  }
+}
+// Every row the check is about to fill says so while it is in flight
+function busyRows(on, label = "checking") {
+  document.querySelectorAll(".row .st").forEach(r => {
+    r.classList.toggle("busy", on);
+    if (on) { r.textContent = "· " + label; r.className = "st dim busy"; }
+  });
+}
+async function checkWith(url, stale) {
+  let id;
+  try { id = Number(await rpc(url, "eth_chainId", [])); }
+  catch (e) {
+    if (stale()) return;
+    // A remembered endpoint that is not answering right now should not strand the page, but it is the
+    // reader's own choice and may simply be behind a VPN: fall back to the public list for this run and
+    // leave the memory alone, so it is tried first again next time
+    if (rememberedRpc(el.network.value) === url && el.network.value !== "custom") {
+      log(`remembered endpoint ${url} did not answer, falling back to the public list`);
+      const urls = (await loadRpcIndex())[Number(el.network.value)];
+      if (urls) return probeCandidates(Number(el.network.value), urls, null);
+    }
+    busyRows(false); resetRows();
+    return showErr(`Endpoint unreachable (<span class="mono">${esc(e.message)}</span>).`);
+  }
+  if (stale()) return;
+  state.chainId = id;
+  const picked = el.network.value;
+  if (picked !== "custom" && Number(picked) !== id) {
+    busyRows(false); resetRows();
+    return showErr(`That endpoint answers for chain <b>${id}</b>, not <b>${picked}</b>.`);
+  }
+
+  // null means the endpoint would not answer, which is a different thing from the contract not being there
+  const errs = [];
+  const attempt = async fn => { try { return await fn(); } catch (e) { errs.push(e.message || String(e)); return null; } };
+  const has = a => attempt(async () => (await getCode(url, a)).length > 2);
+  const c = { safeInfra: {}, safes: [] };
+
+  c.createx = await has(CFG.createx);
+  const gc = await attempt(() => getCode(url, CFG.gate));
+  c.gate = gc === null ? null
+         : gc.length <= 2 ? "missing"
+         : gc.toLowerCase() === CFG.gateCode.toLowerCase() ? "ok" : "foreign";
+  for (const [n, a] of Object.entries(CFG.safeInfra)) c.safeInfra[n] = await has(a);
+
+  for (const s of CFG.safes) {
+    const st = { deployed: await has(s.address) };
+    if (st.deployed === true) {
+      const r = await attempt(() => readSafe(url, s.address));
+      st.owners = r ? r.owners : [];
+      st.threshold = r ? r.threshold : null;
+      st.config = r ? r.config : "not a Safe";
+    }
+    c.safes.push(st);
+  }
+  c.opcodes = await attempt(() => probeOpcodes(url));
+  c.bridges = await attempt(() => bridgeInfo(id));
+  c.explorer = await attempt(() => explorerInfo(id));
+  c.gasPrice = await attempt(() => rpc(url, "eth_gasPrice", []));
+  c.bal = {};
+  c.bal[CFG.namespace.toLowerCase()] = await attempt(() => rpc(url, "eth_getBalance", [CFG.namespace, "latest"]));
+  c.bal[CFG.safeSigner.toLowerCase()] = await attempt(() => rpc(url, "eth_getBalance", [CFG.safeSigner, "latest"]));
+  if (state.account)
+    c.bal[state.account.toLowerCase()] = await attempt(() => rpc(url, "eth_getBalance", [state.account, "latest"]));
+  c.noNativeBalance = await attempt(async () => {
+    const [a, b] = await Promise.all(EMPTY_PROBES.map(x => rpc(url, "eth_getBalance", [x, "latest"])));
+    return BigInt(a) !== 0n && BigInt(a) === BigInt(b);
+  });
+  c.nested = await attempt(async () => {
+    const code = await rpc(url, "eth_getCode", [CFG.nested.address, "latest"]);
+    if (code.length <= 2) return { deployed: false };
+    return { deployed: true, ...(await readSafe(url, CFG.nested.address)) };
+  });
+  const ref = await ethRef();
+  c.ethRef = ref;
+  c.eth = ref ? ref.safes : null;
+  if (c.eth) c.safes.forEach((st, i) => {
+    st.matchesEth = id === 1 ? null
+      : st.deployed !== true ? null
+      : st.config === c.eth[i].config && sameOwners(st.owners, c.eth[i].owners);
+  });
+  // Present is not enough: this page delegatecalls MultiSend from the Safe and deploys a proxy whose
+  // singleton and setup library are read off these addresses. Foreign code at any of them is fatal.
+  if (ref) {
+    c.infraCode = {};
+    for (const [n, a] of Object.entries({ ...CFG.safeInfra, MultiSendCallOnly: MULTISEND })) {
+      const here = await attempt(() => rpc(url, "eth_getCode", [a, "latest"]));
+      c.infraCode[n] = here === null ? null
+        : here.length <= 2 ? "missing"
+        : here.toLowerCase() === (ref.code[n] || "").toLowerCase() ? "ok" : "foreign";
+    }
+  }
+  if (c.gate === "ok") {
+    const ns = await attempt(() => ethCall(url, CFG.gate, SEL.namespaces + word(CFG.namespace)));
+    c.delay = ns === null ? null : Number("0x" + chunk(ns, 1));
+    c.delegates = [];
+    for (const s of CFG.safes)
+      c.delegates.push(await attempt(async () => Number("0x" + chunk(await ethCall(url, CFG.gate,
+        SEL.isDelegate + word(CFG.namespace) + word(s.address)), 0)) === 1));
+  }
+  c.errs = errs;
+  if (stale()) return;
+  busyRows(false);
+  state.checks = c;
+  showErr(errs.length
+    ? `The endpoint answered <b>eth_chainId</b> but failed ${errs.length} read${errs.length > 1 ? "s" : ""}`
+      + ` (<span class="mono">${esc(errs[0])}</span>). Pick another endpoint above.`
+    : null);
+  log("checked chain " + id + (errs.length ? ` — ${errs.length} reads failed` : ""));
+  render();
+  showWalletBalance();
+  // Needs the checks in place, since what it prices is whatever is still outstanding
+  await attempt(() => estimateNeeds(url));
+  if (!stale()) render();
+}
+// Offered on the row that needs it and in place of that row's action, exactly like the Safe rows
+function nsConnect(k, needed) {
+  const b = document.querySelector(`[data-k="${k}"] button[data-act="connect"]`);
+  b.classList.toggle("hide", !(needed && !state.account));
+  b.disabled = false;
+}
+// Only worth saying while a connected account is blocking a call that is actually still needed
+function renderNsSigner(anyNeeded) {
+  const acc = state.account;
+  const wrong = !!acc && acc.toLowerCase() !== CFG.namespace.toLowerCase();
+  $("#nsSignerWant").textContent = CFG.namespace;
+  $("#nsSignerNote").classList.toggle("hide", !(wrong && anyNeeded));
+}
+function showErr(html) {
+  const e = $("#err");
+  e.classList.toggle("hide", !html);
+  if (html) e.innerHTML = html;
+}
+
+// ---- render -----------------------------------------------------------------------------------
+function render() {
+  const root = $("#safes");
+  if (!root.dataset.built) {
+    root.innerHTML = CFG.safes.map((s, i) => `
+      <div class="row" data-k="safe${i}">
+        <div class="what"><b>${s.key}</b><small class="mono">${s.address}</small></div>
+        <span class="st dim">· unchecked</span>
+        <button data-act="connect" class="hide">Connect wallet</button>
+        <button data-act="sync${i}" class="hide" disabled>Sync</button>
+        <button data-act="safe${i}" class="hide" disabled>Deploy Safe</button>
+      </div>
+      <p class="note hide" data-k="safenote${i}" style="margin-top:11px">${s.note}</p>
+      <p class="note hide" data-k="safegas${i}" style="margin-top:11px"></p>
+      <p class="note hide" data-k="safesync${i}" style="margin-top:11px"></p>`).join("");
+    root.dataset.built = "1";
+  }
+  CFG.safes.forEach((s, i) => {
+    document.querySelector(`#namespace [data-k="delegate${i}"] small`).textContent = s.address;
+  });
+  const c = state.checks;
+  if (!c) return renderNsSigner(false);
+
+  setRow("createx", c.createx === null ? "read error" : c.createx ? "deployed" : "missing",
+         c.createx === null ? "bad" : c.createx ? "ok" : "bad", { addr: CFG.createx });
+  $("#createxNote").classList.toggle("hide", c.createx !== false);
+  setRow("gate", c.gate === null ? "read error" : c.gate === "ok" ? "deployed"
+               : c.gate === "missing" ? "not deployed" : "foreign code",
+         c.gate === "ok" ? "ok" : c.gate === "missing" ? "warn" : "bad", { addr: CFG.gate });
+  act("deployGate", c.gate === "missing" && !!state.account, c.createx === true);
+  document.querySelector('[data-k="gate"] button[data-act="connect"]')
+    .classList.toggle("hide", !(c.gate === "missing" && c.createx === true && !state.account));
+
+  renderCompat(c);
+  const code = c.infraCode || {};
+  const vals = Object.values(c.safeInfra);
+  const miss = Object.entries(c.safeInfra).filter(([, v]) => v === false).map(([k]) => k);
+  const foreign = Object.entries(code).filter(([, v]) => v === "foreign").map(([k]) => k);
+  const unverified = !c.infraCode || Object.values(code).some(v => v === null);
+  setRow("safeInfra",
+    vals.some(v => v === null) ? "read error"
+      : miss.length ? "missing " + miss.join(", ")
+      : foreign.length ? "foreign code: " + foreign.join(", ")
+      : unverified ? "present, code unverified"
+      : "verified against Ethereum",
+    vals.some(v => v === null) || miss.length || foreign.length ? "bad" : unverified ? "warn" : "ok",
+    { pop: "infra" });
+  // Deploying a proxy or delegatecalling MultiSend against code that is not Safe's is unrecoverable
+  const infraSafe = !miss.length && !foreign.length && !unverified;
+
+  CFG.safes.forEach((s, i) => {
+    const st = c.safes[i];
+    const good = st.deployed === true && st.config === s.want && st.matchesEth !== false;
+    setRow(`safe${i}`, st.deployed === null ? "read error" : !st.deployed ? "not deployed"
+                     : st.matchesEth === false ? `${st.config}, differs from Ethereum`
+                     : st.config !== s.want ? `${st.config}, want ${s.want}` : st.config,
+           st.deployed === null ? "bad" : !st.deployed ? "warn" : good ? "ok" : "warn", { pop: `safe${i}` });
+    const undeployed = st.deployed === false, ready = miss.length === 0 && !vals.some(v => v === null);
+    act(`safe${i}`, undeployed && !!state.account, ready && infraSafe);
+    document.querySelector(`[data-k="safe${i}"] button[data-act="connect"]`)
+      .classList.toggle("hide", !(undeployed && ready && !state.account));
+    document.querySelector(`[data-k="safenote${i}"]`).classList.toggle("hide", good);
+    // A Safe is deployed by one of the Ledger signers rather than by the namespace, so the gas is
+    // asked for here, against whichever account is connected at the time
+    // The signer pays for both halves: the replay, and the batch that reconciles the owners
+    // Step two of a replay: bring the owner set and threshold up to Ethereum's, in one batch
+    const step = safeStep(i), why = safeStepReason(i);
+    // The signer pays for both halves: the replay, and the batch that reconciles the owners
+    // ~55k an owner plus the batch overhead, rather than a flat guess
+    gasNote(`safegas${i}`, (undeployed || (step && !step.blocked)) ? CFG.safeSigner : null,
+            undeployed ? 350000 : 100000 + 60000 * (step?.calls || 1));
+    act(`sync${i}`, !!step && !step.blocked, !why);
+    if (step && !step.blocked)
+      document.querySelector(`[data-k="safe${i}"] button[data-act="sync${i}"]`).textContent =
+        `Add ${step.adds.length} owners + threshold ${step.threshold}`;
+    const syncNote = document.querySelector(`[data-k="safesync${i}"]`);
+    syncNote.classList.toggle("hide", !(step && why));
+    if (step && why) syncNote.innerHTML = step.blocked
+      ? `<b>Cannot be reconciled from here.</b> ${esc(step.blocked)}. Use the Safe app.`
+      : `<b>Owner set does not match Ethereum.</b> ${esc(why)}.`;
+  });
+
+  renderNested(c);
+
+  if (c.gate !== "ok") {
+    ["delay", "delegate0", "delegate1"].forEach(k => { setRow(k, "no gate", "dim"); nsConnect(k, false); });
+    ["setDelay", "delegate0", "delegate1"].forEach(a => act(a, false, false));
+    renderNsSigner(false);
+    return;
+  }
+  const delayOk = c.delay === CFG.delay;
+  const isNs = state.account && state.account.toLowerCase() === CFG.namespace.toLowerCase();
+  setRow("delay", c.delay === null ? "read error" : c.delay + "s" + (delayOk ? "" : `, want ${CFG.delay}s`),
+         c.delay === null ? "bad" : delayOk ? "ok" : "warn", { addr: CFG.gate });
+  const delayNeeded = c.delay !== null && !delayOk;
+  act("setDelay", delayNeeded && !!state.account, isNs);
+  nsConnect("delay", delayNeeded);
+  let anyNeeded = delayNeeded;
+  CFG.safes.forEach((s, i) => {
+    const d = c.delegates[i];
+    setRow(`delegate${i}`, d === null ? "read error" : d ? "delegated" : "not delegated",
+           d === null ? "bad" : d ? "ok" : "warn", { addr: s.address });
+    act(`delegate${i}`, d === false && !!state.account, delayOk && isNs);
+    nsConnect(`delegate${i}`, d === false);
+    anyNeeded = anyNeeded || d === false;
+  });
+  renderNsSigner(anyNeeded);
+  gasRow("gasNs", CFG.namespace, anyNeeded, gasUnitsNs());
+}
+
+function renderCompat(c) {
+  const op = c.opcodes;
+  const blind = !op || !op["control"];
+  const cancun = !blind && op["PUSH0"] && op["MCOPY"] && op["TSTORE / TLOAD"];
+  setRow("cancun", blind ? "endpoint refuses the probe" : cancun ? "Cancun opcodes present" : "pre-Cancun",
+         blind ? "warn" : cancun ? "ok" : "bad", { pop: "cancun" });
+
+  const b = c.bridges || {};
+  const have = ["lz", "ccip", "hyperlane"].filter(k => b[k]);
+  const missing = (b.dvns || []).filter(([, ok]) => !ok);
+  const missingReq = missing.filter(([, , req]) => req);
+  // Any absent DVN is worth surfacing here: a required one is a problem, an optional one is a fact the
+  // row should not swallow into the popup
+  const dvnNote = missingReq.length ? ", DVNs incomplete"
+                : missing.length ? `, ${missing.length} optional DVN${missing.length > 1 ? "s" : ""} missing`
+                : "";
+  const asked = c.bridges ? c.bridges.asked : 0;
+  const partial = asked > 0 && asked < 3 ? `, ${3 - asked} registr${asked === 2 ? "y" : "ies"} unreachable` : "";
+  setRow("bridges",
+    !c.bridges || asked === 0 ? "registries unreachable"
+      : have.length === 0 ? "none of the three" + partial
+      : (have.length === 1 ? "one only" : `${have.length} available`) + dvnNote + partial,
+    !c.bridges || asked === 0 ? "warn"
+      : have.length === 0 ? "bad"
+      : have.length === 1 || dvnNote || partial ? "warn" : "ok",
+    { pop: "bridges" });
+
+  const x = c.explorer;
+  setRow("explorer",
+    !x ? "not looked up"
+      : x.etherscan ? "Etherscan verification API"
+      : x.blockscout ? "Blockscout API answered"
+      : x.own ? "set here, verification API unproven"
+      : x.listed ? "listed, no verification API reached"
+      : !x.known ? "chain list unavailable"
+      : "none listed",
+    !x ? "warn" : x.etherscan || x.blockscout ? "ok" : x.listed || !x.known ? "warn" : "bad",
+    x && (x.etherscan || x.blockscout || x.listed) ? { pop: "explorer" } : null);
+}
+
+// The nested Safe is an owner, not infrastructure: a chain can be set up without it and everything still
+// works at 4 of 9, but that seat is dead until Cantina puts it there, so it is reported rather than gating.
+function renderNested(c) {
+  const st = c.nested, ref = c.ethRef?.nested;
+  const note = document.querySelector('[data-k="nestednote"]');
+  const onEth = state.chainId === 1;
+  const matches = st?.deployed && ref && st.config === ref.config && sameOwners(st.owners, ref.owners);
+  setRow("nested",
+    !st ? "read error"
+      : st.deployed === false ? "not deployed here"
+      : !ref ? `${st.config}, Ethereum not read`
+      : onEth ? st.config
+      : matches ? `${st.config}, matches Ethereum`
+      : `${st.config}, differs from Ethereum`,
+    !st ? "bad" : st.deployed === false ? "warn" : !ref ? "warn" : (onEth || matches) ? "ok" : "bad",
+    st?.deployed ? { pop: "nested" } : null);
+  const missing = st && st.deployed === false;
+  const differs = st?.deployed && ref && !matches && !onEth;
+  note.classList.toggle("hide", !(missing || differs));
+  if (missing) note.innerHTML = `<b>Not on this chain.</b> ${esc(CFG.nested.ownerOf)} still reaches its`
+    + ` ${esc(CFG.safes[0].want)} with the other owners, but this seat cannot sign until Cantina deploys`
+    + ` their Safe at <span class="mono">${addrLine(CFG.nested.address)}</span> here.`;
+  if (differs) note.innerHTML = `<b>Does not match Ethereum.</b> The Safe at this address is`
+    + ` <span class="mono">${esc(st.config)}</span> here and <span class="mono">${esc(ref.config)}</span> on`
+    + ` Ethereum, or holds different owners. Check with Cantina before relying on this seat.`;
+}
+
+// A signer that cannot pay for its own transaction is the quiet way this stalls, so the row appears
+// as soon as one is needed and says what it holds
+// What a wallet will actually demand: it caps the fee at roughly twice the base fee plus a tip, so a
+// budget built from eth_gasPrice alone comes out under what the wallet insists on holding.
+async function feeCap(url) {
+  let base = 0n;
+  try {
+    const blk = await rpc(url, "eth_getBlockByNumber", ["latest", false]);
+    base = blk?.baseFeePerGas ? BigInt(blk.baseFeePerGas) : 0n;
+  } catch { /* pre-1559 chain, or an endpoint that will not say */ }
+  const price = BigInt(state.checks?.gasPrice || 0);
+  if (!base) return price;
+  return base * 2n + (price > base ? price - base : base / 10n);
+}
+// eth_estimateGas on the transaction itself, falling back to a unit count when the node refuses to
+// estimate for an account that cannot yet pay for it
+async function estimateWei(url, tx, fallbackUnits, cap) {
+  let gas;
+  try { gas = BigInt(await rpc(url, "eth_estimateGas", [tx])); }
+  catch { gas = BigInt(fallbackUnits); }
+  return gas * cap * 5n / 4n;
+}
+async function estimateNeeds(url) {
+  const c = state.checks;
+  if (!c) return;
+  const cap = await feeCap(url);
+  if (!cap) return;
+  const need = { ns: 0n, safe: 0n };
+  if (c.gate === "ok") {
+    const calls = [];
+    if (c.delay !== null && c.delay !== CFG.delay) calls.push(SEL.setDelay + num(CFG.delay));
+    CFG.safes.forEach((s, i) => {
+      if (c.delegates?.[i] === false) calls.push(SEL.setDelegate + word(s.address) + num(1));
+    });
+    for (const data of calls)
+      need.ns += await estimateWei(url, { from: CFG.namespace, to: CFG.gate, data }, 60000, cap);
+  }
+  for (let i = 0; i < CFG.safes.length; i++) {
+    const st = c.safes[i], step = safeStep(i);
+    if (st?.deployed === false)
+      need.safe += await estimateWei(url,
+        { from: CFG.safeSigner, to: CFG.safeFactory, data: CFG.safes[i].calldata }, 350000, cap);
+    else if (step && !step.blocked)
+      need.safe += await estimateWei(url, { from: CFG.safeSigner, to: CFG.safes[i].address,
+        data: encodeExec(CFG.safes[i].address, MULTISEND, step.data, CFG.safeSigner, 1) }, 520000, cap);
+  }
+  c.need = need;
+}
+
+// 60k a call, over the namespace calls still outstanding
+function gasUnitsNs() {
+  const c = state.checks;
+  if (!c || c.delay === null || !c.delegates) return 60000;
+  return 60000 * (Number(c.delay !== CFG.delay) + c.delegates.filter(d => d === false).length);
+}
+// Twice what the pending calls should cost, so a base fee that moves does not strand the run
+// Sending exactly the shortfall leaves nothing for a base fee that moves between the transfer and the
+// transaction it is meant to pay for, which is how a top-up button ends up being pressed three times.
+// Fill to half again the requirement instead, so one press settles it.
+const topUp = g => (g.need * 3n / 2n) - BigInt(g.bal);
+
+function gasShortfall(account, gasUnits, estimated) {
+  const bal = state.checks?.bal?.[account.toLowerCase()];
+  const price = state.checks?.gasPrice;
+  // Fiction, and the whole point of reading it was to decide whether a top-up is needed
+  if (state.checks?.noNativeBalance) return { noNative: true };
+  if (bal === null || bal === undefined) return { unread: true };
+  const need = estimated !== undefined && estimated !== null && estimated > 0n ? estimated
+    : price ? BigInt(price) * BigInt(gasUnits) * 2n : null;
+  return { bal, need, short: need !== null && BigInt(bal) < need };
+}
+function chainLabel() {
+  return (CHAINS.find(c => c[0] === state.chainId) || [])[1]
+    || chainMeta[state.chainId]?.name || ("chain " + state.chainId);
+}
+function gasNote(k, account, gasUnits) {
+  const note = document.querySelector(`[data-k="${k}"]`);
+  const g = account && gasShortfall(account, gasUnits, state.checks?.need?.safe);
+  note.classList.toggle("hide", !(g && (g.short || g.noNative)));
+  if (!g || !(g.short || g.noNative)) return;
+  const sym = chainMeta[state.chainId]?.symbol || "ETH";
+  // Nothing to offer but the instruction: the balance cannot be read and a value transfer would revert
+  if (g.noNative) {
+    note.innerHTML = `<b>Gas cannot be checked here.</b> ${esc(chainLabel())} has no native currency: it`
+      + ` charges gas in a token and rejects value transfers, so neither what`
+      + ` <span class="mono">${addrLine(account)}</span> holds nor a top-up from this page means anything.`
+      + ` Fund that signer with the chain's gas token before sending.`;
+    return;
+  }
+  const short = topUp(g);
+  // Whatever wallet is connected can pay, and it usually is not the signer: the tokens tend to sit
+  // somewhere else entirely
+  const canSend = !!state.account && state.account.toLowerCase() !== account.toLowerCase();
+  note.innerHTML = `<b>Not enough gas.</b> The Safe work is sent by <span class="mono">${addrLine(account)}</span>,`
+    + ` one of the Safe's own signers: it needs about <b>${fmtEth(short)} ${sym}</b> more on`
+    + ` ${esc(chainLabel())}.`
+    + (canSend
+        ? ` <button data-act="fundSigner" data-amount="${topUp(g)}">Send ${fmtEth(topUp(g))} ${sym}</button>`
+        : state.account ? " Connect a wallet holding gas to send it from here." : "");
+}
+function gasRow(k, account, needed, gasUnits) {
+  const row = document.querySelector(`[data-k="${k}"]`);
+  const note = document.querySelector(`[data-k="${k}Note"]`);
+  row.classList.toggle("hide", !(needed && account));
+  note.classList.add("hide");
+  if (!needed || !account) return;
+  const sym = chainMeta[state.chainId]?.symbol || "ETH";
+  const chainName = (CHAINS.find(c => c[0] === state.chainId) || [])[1]
+    || chainMeta[state.chainId]?.name || ("chain " + state.chainId);
+  row.querySelector("small").textContent = account;
+  const g = gasShortfall(account, gasUnits, state.checks?.need?.ns);
+  if (g.noNative) {
+    setRow(k, "no native currency", "dim");
+    row.querySelector('button[data-act]')?.classList.add("hide");
+    note.classList.remove("hide");
+    note.innerHTML = `<b>Gas cannot be checked here.</b> ${esc(chainName)} charges gas in a token and`
+      + ` rejects value transfers, so this page can neither read what`
+      + ` <span class="mono">${addrLine(account)}</span> holds nor top it up. Fund it with the chain's`
+      + ` gas token before sending.`;
+    return;
+  }
+  if (g.unread) return setRow(k, "balance unread", "bad");
+  setRow(k, `${fmtEth(g.bal)} ${sym}` + (g.short ? `, need about ${fmtEth(g.need)}` : ""),
+         g.short ? "warn" : "ok", g.short ? null : { addr: account });
+  const btn = row.querySelector('button[data-act]');
+  const canSend = g.short && !!state.account
+    && state.account.toLowerCase() !== account.toLowerCase();
+  if (btn) {
+    btn.classList.toggle("hide", !canSend);
+    btn.disabled = false;
+    if (canSend) btn.textContent = `Send ${fmtEth(topUp(g))} ${sym}`;
+  }
+  if (!g.short) return;
+  note.classList.remove("hide");
+  note.innerHTML = `<b>Not enough gas.</b> Send about <b>${fmtEth(topUp(g))} ${sym}</b> to`
+    + ` <span class="mono">${addrLine(account)}</span> on ${esc(chainName)}, then re-check.`;
+}
+
+// Details a link cannot show: who owns a Safe, which of the five Safe contracts is where
+const pop = $("#pop");
+$("#popClose").addEventListener("click", () => pop.close());
+// A click on the backdrop lands on the dialog element itself, since its children cover the whole of it
+pop.addEventListener("click", ev => { if (ev.target === pop) pop.close(); });
+function openPop(title, rows, links, footerHtml = "") {
+  $("#popTitle").textContent = title;
+  $("#popBody").innerHTML = rows;
+  // Built before the dialog opens, so a footer action can never be missing from a dialog that is showing
+  $("#popFoot").innerHTML = footerHtml + (links || []).filter(([, href]) => httpOnly(href)).map(([label, href]) =>
+    `<a href="${encodeURI(httpOnly(href))}" target="_blank" rel="noopener"><button>${esc(label)}</button></a>`).join("");
+  pop.showModal();
+}
+const addrLine = a => {
+  const hex = /^0x[0-9a-fA-F]{40}$/.test(String(a)) ? a : esc(a);
+  const u = /^0x[0-9a-fA-F]{40}$/.test(String(a)) ? explorerUrl(a) : null;
+  return u ? `<a href="${encodeURI(u)}" target="_blank" rel="noopener">${hex}</a>` : hex;
+};
+
+function showSafePop(i) {
+  const s = CFG.safes[i], st = state.checks.safes[i], ref = (state.checks.eth || [])[i];
+  const here = (st.owners || []).map(o => o.toLowerCase());
+  const there = ((ref && ref.owners) || []).map(o => o.toLowerCase());
+  const union = [...new Set([...(st.owners || []), ...((ref && ref.owners) || [])])];
+  const owners = union.map(o => {
+    const l = o.toLowerCase(), h = here.includes(l), t = there.includes(l);
+    const mark = !ref ? "" : h && t ? '<span class="ok">✓</span> '
+               : h ? '<span class="warn">+ only here</span> ' : '<span class="warn">− only on Ethereum</span> ';
+    return `<li>${mark}${addrLine(o)}</li>`;
+  }).join("");
+  const drift = st.matchesEth === false;
+  openPop(s.key, `
+    <div class="kv"><span>Address</span><span class="mono">${addrLine(s.address)}</span></div>
+    <div class="kv"><span>This chain</span><span class="mono">${st.config || "not deployed"}</span></div>
+    <div class="kv"><span>Ethereum</span><span class="mono ${drift ? "warn" : ""}">${ref ? ref.config : "not read"}</span></div>
+    <div class="kv"><span>Expected</span><span class="mono">${s.want}</span></div>
+    ${drift ? '<p class="note bad-note" style="margin:8px 0 0">This chain does not match Ethereum.</p>' : ""}
+    <div class="kv"><span>Owners${ref ? ", against Ethereum" : ""}</span><span></span></div>
+    <ol>${owners.length ? owners : "<li>not read</li>"}</ol>`,
+    [["Open in Safe", `https://app.safe.global/home?safe=${shortName()}:${s.address}`]]
+      .concat(explorerUrl(s.address) ? [["Explorer", explorerUrl(s.address)]] : []));
+}
+function showCancunPop() {
+  const op = state.checks.opcodes || {};
+  const rows = Object.keys(PROBES).map(n =>
+    `<div class="kv"><span>${op[n] ? '<span class="ok">✓</span>' : '<span class="bad">✕</span>'} ${n}</span>
+     <span class="mono">${n === "control" ? "no opcode past Frontier" : "eth_call probe"}</span></div>`).join("");
+  openPop("EVM level", rows + (op["control"] ? "" :
+    '<p class="note bad-note" style="margin:8px 0 0">The control probe failed, so this endpoint will not run '
+    + 'code-only <span class="mono">eth_call</span>. Try another endpoint before reading anything into the rest.</p>'), []);
+}
+function showBridgesPop() {
+  const b = state.checks.bridges || {};
+  const line = (name, ok, detail, reached = true) =>
+    `<div class="kv"><span>${ok ? '<span class="ok">✓</span>' : '<span class="warn">✕</span>'} ${name}</span>
+     <span class="mono">${detail || (reached ? "not on this chain" : "registry unreachable")}</span></div>`;
+  const dvns = b.dvns ? `<div class="kv"><span>DVNs</span><span></span></div><ol>` + b.dvns.map(([n, ok, req]) =>
+    `<li>${ok ? '<span class="ok">✓</span>' : req ? '<span class="warn">✕</span>' : '<span class="dim">·</span>'}`
+    + ` ${n}${req ? "" : ' <span class="dim">(optional)</span>'}</li>`).join("") + "</ol>" : "";
+  openPop("Cross-chain messaging",
+    line("LayerZero V2", !!b.lz, b.lz && `eid ${b.lz.eid} · ${addrLine(b.lz.endpoint)}`)
+    + line("Chainlink CCIP", !!b.ccip, b.ccip && addrLine(b.ccip.router))
+    + line("Hyperlane", !!b.hyperlane, b.hyperlane && `${esc(b.hyperlane.slug)} · ${addrLine(b.hyperlane.mailbox)}`)
+    + dvns
+    + '<p class="note" style="margin:8px 0 0">One bridge is required, two preferred. LayerZero also needs '
+    + 'Deutsche Telekom and Canary live; the other three are optional.</p>', []);
+}
+function showExplorerPop() {
+  const x = state.checks.explorer || {};
+  const link = u => httpOnly(u)
+    ? `<a href="${encodeURI(httpOnly(u))}" target="_blank" rel="noopener">${esc(u)}</a>` : esc(u);
+  openPop("Block explorer",
+    `<div class="kv"><span>${x.etherscan ? '<span class="ok">✓</span>' : '<span class="warn">✕</span>'} Etherscan v2 API</span>
+      <span class="mono">${x.etherscan ? link(x.etherscan.api) : "chain not on Etherscan's chainlist"}</span></div>
+     <div class="kv"><span>${x.blockscout ? '<span class="ok">✓</span>' : '<span class="warn">✕</span>'} Blockscout API</span>
+      <span class="mono">${x.blockscout ? link(x.blockscout.url) : "not reached"}</span></div>
+     <div class="kv"><span>Explorers listed</span><span></span></div>
+     <ol>${(x.all || []).map(e => `<li>${esc(e.name || "")} ${link(e.url)}</li>`).join("") || "<li>none</li>"}</ol>
+     <p class="note" style="margin:8px 0 0">Etherscan support is read off its own v2 chainlist, so a chain
+       listed there verifies through one API and one key. A Blockscout instance is called directly; a CORS
+       refusal shows as not reached rather than as absent.</p>`, []);
+}
+// Adding an owner cannot be undone from this page, and a wrong one cannot be undone at all without the
+// Safe's own signatures. So the batch is shown in full, addresses and all, before it is signed.
+function confirmSync(i) {
+  const step = safeStep(i), key = CFG.safes[i].key, ref = (state.checks?.eth || [])[i];
+  if (!step || step.blocked) return;
+  const owners = step.adds.map(o => `<li>${addrLine(o)}</li>`).join("");
+  openPop(`Reconcile ${key}`, `
+    <div class="kv"><span>Safe</span><span class="mono">${addrLine(CFG.safes[i].address)}</span></div>
+    <div class="kv"><span>Chain</span><span class="mono">${esc(chainLabel())} (${state.chainId})</span></div>
+    <div class="kv"><span>Sent by</span><span class="mono">${addrLine(state.account)}</span></div>
+    <div class="kv"><span>One transaction</span><span class="mono">${step.calls} calls via MultiSend</span></div>
+    <div class="kv"><span>Calldata</span><span class="mono">${step.data.length / 2 - 1} bytes, as executed on Linea, Base and Gnosis</span></div>
+    <div class="kv"><span>Owners to add</span><span></span></div>
+    <ol>${owners || "<li>none</li>"}</ol>
+    <div class="kv"><span>Then threshold</span><span class="mono">${step.threshold} of ${(ref?.owners || []).length}</span></div>
+    <p class="note bad-note" style="margin:8px 0 0">These are the exact bytes that set this Safe up on
+      Linea, Base and Gnosis, not something assembled from a live reading, and the resulting owner set has
+      been checked against Ethereum. Adding an owner cannot be undone from here: read every address before
+      signing.</p>`,
+    [], `<button class="go" data-act="syncgo${i}">Sign and send</button>`);
+}
+function sendSync(i) {
+  const step = safeStep(i), safe = CFG.safes[i].address;
+  if (!step || step.blocked || safeStepReason(i)) return;
+  pop.close();
+  // operation 1: the Safe delegatecalls MultiSend, so each inner call is made by the Safe itself
+  return send(`reconcile ${CFG.safes[i].key} (${step.calls} calls)`,
+              safe, encodeExec(safe, MULTISEND, step.data, state.account, 1));
+}
+
+function showNestedPop() {
+  const st = state.checks?.nested, ref = state.checks?.ethRef?.nested;
+  const here = (st?.owners || []).map(o => o.toLowerCase());
+  const there = (ref?.owners || []).map(o => o.toLowerCase());
+  const rows = [...new Set([...(st?.owners || []), ...(ref?.owners || [])])].map(o => {
+    const l = o.toLowerCase(), h = here.includes(l), t = there.includes(l);
+    const mark = !ref ? "" : h && t ? '<span class="ok">✓</span> '
+      : h ? '<span class="warn">+ only here</span> ' : '<span class="warn">− only on Ethereum</span> ';
+    return `<li>${mark}${addrLine(o)}</li>`;
+  }).join("");
+  openPop("Cantina nested Safe", `
+    <div class="kv"><span>Address</span><span class="mono">${addrLine(CFG.nested.address)}</span></div>
+    <div class="kv"><span>Owner of</span><span class="mono">${esc(CFG.nested.ownerOf)}</span></div>
+    <div class="kv"><span>This chain</span><span class="mono">${esc(st?.config || "not deployed")}</span></div>
+    <div class="kv"><span>Ethereum</span><span class="mono">${esc(ref?.config || "not read")}</span></div>
+    <div class="kv"><span>Expected</span><span class="mono">${esc(CFG.nested.want)}</span></div>
+    <div class="kv"><span>Owners${ref ? ", against Ethereum" : ""}</span><span></span></div>
+    <ol>${rows || "<li>not read</li>"}</ol>
+    <p class="note" style="margin:8px 0 0">Cantina holds this one. It is an owner seat, not protocol
+      infrastructure, so nothing here is blocked by it.</p>`, []);
+}
+function showInfraPop() {
+  const c = state.checks, code = c.infraCode || {};
+  const mark = n => code[n] === "ok" ? '<span class="ok">✓</span>'
+    : code[n] === "foreign" ? '<span class="bad">✕ foreign code</span>'
+    : code[n] === "missing" ? '<span class="bad">✕ missing</span>'
+    : '<span class="warn">· unverified</span>';
+  const rows = Object.entries({ ...CFG.safeInfra, MultiSendCallOnly: MULTISEND }).map(([n, a]) =>
+    `<div class="kv"><span>${mark(n)} ${n}</span><span class="mono">${addrLine(a)}</span></div>`).join("");
+  openPop("Safe 1.4.1 contracts", rows
+    + '<p class="note" style="margin:8px 0 0">Each one is compared byte for byte against the same address '
+    + 'on Ethereum. A proxy is deployed against these and MultiSend is <b>delegatecalled</b> by the Safe, '
+    + 'so foreign code at any of them would be unrecoverable, and every Safe action stays disabled.</p>', []);
+}
+
+document.body.addEventListener("click", ev => {
+  const a = ev.target.closest("a.st[data-pop]");
+  if (a) {
+    ev.preventDefault();
+    if (!state.checks) return;
+    const k = a.dataset.pop;
+    if (k === "infra") return showInfraPop();
+    if (k === "cancun") return showCancunPop();
+    if (k === "explorer") return showExplorerPop();
+    if (k === "nested") return showNestedPop();
+    if (k === "bridges") return showBridgesPop();
+    const m = k.match(/^safe(\d)$/);
+    if (m) return showSafePop(Number(m[1]));
+    return;
+  }
+  const b = ev.target.closest("button[data-act]");
+  if (!b || b.disabled) return;
+  const which = b.dataset.act;
+  if (which === "connect") return connectWallet();
+  if (which === "fundSigner")
+    return send("fund the Safe signer", CFG.safeSigner, null, BigInt(b.dataset.amount));
+  if (which === "fundNs") {
+    const g = gasShortfall(CFG.namespace, gasUnitsNs(), state.checks?.need?.ns);
+    if (!g.short) return;
+    return send("fund the namespace", CFG.namespace, null, topUp(g));
+  }
+  if (which === "deployGate")
+    return send("deploy gate", CFG.createx, encodeDeployCreate2(CFG.gateSalt, CFG.gateInit));
+  if (which === "setDelay")
+    return send("setDelay", CFG.gate, SEL.setDelay + num(CFG.delay));
+  let m;
+  if ((m = which.match(/^delegate(\d)$/)))
+    return send("setDelegate " + CFG.safes[m[1]].key, CFG.gate,
+                SEL.setDelegate + word(CFG.safes[m[1]].address) + num(1));
+  if ((m = which.match(/^safe(\d)$/)))
+    return send("deploy " + CFG.safes[m[1]].key, CFG.safeFactory, CFG.safes[m[1]].calldata);
+  if ((m = which.match(/^syncgo(\d)$/))) return sendSync(Number(m[1]));
+  if ((m = which.match(/^sync(\d)$/))) return confirmSync(Number(m[1]));
+});
+
+addEventListener("error", e => showErr(`Script error: <span class="mono">${e.message}</span>`));
+addEventListener("unhandledrejection", e =>
+  showErr(`Script error: <span class="mono">${(e.reason && e.reason.message) || e.reason}</span>`));
+
+// Reopen on the last chain, and on the endpoint it was using, before the first check runs
+const saved = recall();
+if (saved && !applySaved(saved)) pendingRestore = saved;
+render();
+loadRpcIndex();
+el.network.dispatchEvent(new Event("change"));
+</script>
+</body>
+</html>
